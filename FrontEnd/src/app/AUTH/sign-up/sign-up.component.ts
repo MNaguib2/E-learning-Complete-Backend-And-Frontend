@@ -71,7 +71,6 @@ SubmitSignUp(SignUpForm : NgForm){
     this.service.PostSignUp(formData).subscribe(data => {
       console.log(data);
     },(error) => {
-      //console.log(error);
       this.ShowErrorMesage(error);
     });
 

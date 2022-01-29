@@ -96,6 +96,6 @@ export class AuthService {
     )
   }
   PostSignUp(Data : FormData){
-   return this.http.post(this.API_URL+'/SigUp' , Data);
+   return this.http.post(this.API_URL+'/SigUp' , Data , { observe: 'response' });
   }
 }

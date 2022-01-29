@@ -7,15 +7,16 @@ const AuthRoute = require('./Route/Auth');
 const multer =require('multer');
 const app = express();
 
-app.use(multer().array())
 app.use(bodyparse.json());
 
-
+app.use(multer().array());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
 
@@ -23,6 +24,7 @@ app.use('/Admin', AuthRoute)
 
 mongoose.connect(url)
 .then(result => {
+    /*
     User.findOne()
     .then(IfOneUser => {
        if(!IfOneUser){
@@ -36,18 +38,18 @@ mongoose.connect(url)
             Gender: 'Male'
         }).save()
         .then(result => {
-            console.log(result);
+            //console.log(result);
         }).catch(err => console.log(err));
        }
     }).catch(err => console.log(err));
-    
+    /*/
     app.listen(3000);
 }).catch(err => console.log(err));
 
 app.use((error, req, res, next) => {
+    console.log(error);
     const StatusCode = Number(JSON.stringify(error).slice(14, 17));
-    const message = error.toString().split(':')[1].trim();
-    // console.log(StatusCode + " " + message);
+    const message = error.toString().split(':')[1].trim();    
     return res.status(StatusCode).json({
         message : error.toString().split(':')[1].trim()
     })

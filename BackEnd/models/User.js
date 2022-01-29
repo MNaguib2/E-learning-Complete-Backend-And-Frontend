@@ -23,7 +23,7 @@ const UserSchema = new schema({
         required: true
     },
     Type: {
-        type: Number,
+        type: Number, //1=Admin 2=Proffessor 3=Student
         required: true
     },
     detials: String,
