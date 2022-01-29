@@ -1,0 +1,11 @@
+<div class="backdrop" (click)="onClose()"></div>
+<div class="alert-Box">
+    <div class="row">
+        <h1 class="col-12" style="color: #800000;">Error</h1>
+        <hr>
+        <h2 class="col-12 text-danger"><u><strong>StatusCode :</strong></u><em> {{StatusCode}}</em></h2>
+        <h3 class="col-12 text-danger"><u><strong>Error :</strong></u><em> {{Error}}</em></h3>
+        <div class="col-8"></div>
+        <button class="btn btn-primary col-3" (click)="onClose()">Close</button>
+    </div>
+</div>

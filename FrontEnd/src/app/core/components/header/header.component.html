@@ -1,0 +1,23 @@
+<div class="contain">
+  <div class="logo">
+    <a routerLink="/"><img src="assets/img/logo.png"></a>
+  </div>
+  <div class="login-block">
+    <div class="log-in" *ngIf="userEmail.length > 0">
+      <a class="dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        {{ userEmail }}</a>
+      <ul class="dropdown-menu mt-3" aria-labelledby="navbarDarkDropdownMenuLink">
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><a class="dropdown-item" style="position: relative; cursor: pointer;" (click)="MyCourse()">My Courses</a>
+        </li>
+        <li><a class="dropdown-item" href="#">News</a></li>
+      </ul>
+
+    </div>
+    <button *ngIf="LogInOut" class="log-out" (click)=logOut()>
+      <span>Log Out</span>
+    </button>
+    <button class="log-out" href="#" *ngIf="!LogInOut" (click)="SignUp()" >SingUp</button>
+  </div>
+</div>

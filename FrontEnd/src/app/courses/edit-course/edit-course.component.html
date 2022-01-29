@@ -1,0 +1,40 @@
+<!---->
+<h1 class="font-italic elegantshd" style="text-align: center;"> Welcome Profosser </h1>
+<form class="form-row pt-5" style="max-width: 80vw;" #EditeForm="ngForm" *ngIf="Loading" (ngSubmit)="EditeCourse(EditeForm)">  
+  <div class="form-group col-md-8">
+      <label for="Title" style="font-size: 20px; font-weight:bold; padding-left: 2vw;">Title Course</label>      
+      <input type="text" class="form-control" id="Title" name="title" [ngModel]="course.title" required [placeholder]= "course.title" #title="ngModel" >
+    </div>
+    <div class="form-group col-md-4">
+        <label for="date" style="font-size: 20px; font-weight:bold;">Date Course</label>
+        <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" class="form-control" id="date" name="date" [ngModel]="course.date" required [placeholder]= "course.date | date: 'MM/dd/yyyy'">
+    </div>
+    <div class="form-group col-md-8">
+      <label for="authors" style="font-size: 20px; font-weight:bold; margin-left: 2vw;">Autorize</label>
+        <ol style="max-height: 10vh; overflow-y: auto; overflow-x: hidden; padding-left: 3vw;">
+          <div name="check" class="row">
+          <ng-template ngFor let-Autho [ngForOf]="Autor" let-i="index" let-o="odd" let-x="even">
+              <li id="content1" class="col-12 col-sm-5 col-md-5 pl-0 ml-4" style=" line-height: 20px"> 
+              <input type="checkbox" name="checkAutho" (change)="changecheckbox(EditeForm)" 
+               [checked]="course.authors.includes(Autho.id)"> {{Autho.firstName}} {{Autho.lastName}}</li>
+          </ng-template> 
+        </div>
+        </ol>  
+    </div>
+    <div class="form-group col-md-4 ">
+      <label for="duration" style="font-size: 20px; font-weight:bold;">Duration</label>
+      <input type="number" min="1" class="form-control" name="Duration" [ngModel]="course.duration" required  id="duration" [placeholder]= "course.duration">
+    </div>
+
+    <!-- -->
+    <div class="form-group col-md-12 ">
+      <label id="tagetop" for="discription" style="font-size: 20px; font-weight:bold; text-align:center;">Discription</label>
+      <textarea class="form-control" name="discription" [ngModel]="course.description" #discription="ngModel" required  id="discription" [placeholder]= "course.description"> </textarea>
+    </div> 
+
+    <div class="form-group col-md-12">
+    <h2 style="text-transform: none; margin-left: 1vw; text-align:center;">
+      <input type="checkbox" style="size: 20px" name="agree" [(ngModel)]="isChecked" required>All Data Entre Is true</h2>
+    <button type="submit" class="btn btn-primary"[disabled]="!EditeForm.valid">Submit</button>    
+    </div>
+  </form>

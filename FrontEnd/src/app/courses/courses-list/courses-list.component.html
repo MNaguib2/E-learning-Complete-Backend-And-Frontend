@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="edit">
+    <div class="search">
+      <input type="text" class="search-field" placeholder='Search...' (keyup)="findCourses($event.target.value)"
+        [(ngModel)]="searchTerm">
+    </div>
+    <div class="add" id="test">
+      <button class="add-btn" (click)="sendCreatPage()">Add Course</button>
+    </div>
+  </div>
+  <div class="matches">{{courses.length}} COURSES SHOWN</div>
+  <ng-container *ngIf="courses.length; else noCourses">
+    <div class="row">
+      <div class="col-md-6 col-12 col-lg-4 col-xl-3 pb-3" *ngFor="let corse of courses; index as i">
+        <div id="C{{i}}" class="card" style="width: 18rem; height: 19rem;">
+          <div class="card-body">
+            <h5 class="link-primary" (click)="Detials(corse.id)"
+            style="height: 3rem; text-align: center;cursor: pointer;">
+              {{corse.title}}</h5>
+            <img [src]="corse.imageUrl" class="card-img" [alert]="corse.imageUrl" style="max-height: 60px;">
+            <h6 class="card-subtitle mb-2 text-muted mt-2">{{corse.date}}</h6>
+            <p class="card-text" style="display: inline;">{{content[i]}}</p>
+            
+            <a class="stretched-link text-danger" style="position: relative; cursor: pointer;" id="M{{i}}"
+              *ngIf="!isContentToggled[i]" (click)="toggleContent(i)"
+               i18n><!--="nonEditedContent[i].length == content[i].length"-->
+              Read More</a>
+            <a class="stretched-link text-danger" style="position: relative; cursor: pointer;" id="L{{i}}"
+              *ngIf="isContentToggled[i]" (click)="toggleContent(i)" i18n>Read Less</a>
+
+            <div style="display: block;">
+              <a routerLink="/courses/Edite/{{corse.id}}" class="card-link">Course Edit</a>
+              <a routerLink="#" class="card-link">Another Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #noCourses>
+    <div class="no-results">
+      NO DATA. FEEL FREE TO ADD NEW COURSE
+    </div>
+  </ng-template>
+</div>

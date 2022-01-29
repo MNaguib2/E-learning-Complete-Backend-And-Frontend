@@ -1,0 +1,67 @@
+<ng-template appPlaceHolder></ng-template>
+<form class="container" #SignUpForm="ngForm" (submit)="SubmitSignUp(SignUpForm)">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="inputEmail4">Email</label>
+        <input type="email" class="form-control" id="Email" placeholder="Email" name="Email" ngModel required>
+      </div>
+      <div class="form-group">
+        <label for="inputPassword4">Password</label>
+        <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name="Password" ngModel required>
+      </div>
+      <div class="form-group">
+        <label for="firstname">First Name</label>
+        <input type="text" class="form-control" id="firstname" name="firstname" ngModel required>
+      </div>
+      <div class="form-group">
+        <label for="lastname">Last Name</label>
+        <input type="text" class="form-control" id="lastname"  name="lastname" ngModel required>
+      </div>
+      <div class="row" style="margin-left: .5vw;">
+        <div class="form-check col-md-4">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="Male" checked
+            (change)="changeGender($event)">
+          <label class="form-check-label" for="Male">
+            Male
+          </label>
+        </div>
+        <div class="form-check col-md-4">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="FeMale"
+            (change)="changeGender($event)">
+          <label class="form-check-label" for="FeMale">
+            FeMale
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" class="form-control" id="date" name="date" ngModel required>
+      </div>
+      <div class="form-group">
+        <label for="confirmpassword">confirm Password</label>
+        <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" ngModel required>
+      </div>
+      <div class="form-group">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="gridCheck">
+          <label class="form-check-label" for="gridCheck">
+            Check me out
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-4 col-sm-8 col-lg-3 col-6 col-xl-2 mt-5">
+      <div class="mainPic" (mouseenter)="mouseentreInAvater($event)"
+      (mouseleave)="mouseLeaveInAvater($event)">
+      <img class="rounded-circle" style="height: 100%; width: 100%;" 
+        [src]="imageAvatar">
+      <img class="selectImage" src="assets/Avatar/Select Image.png" (click)="selectFile.click()">
+    </div>
+    </div>
+<input type="file" (change)="getImage($event)" style="display: none" #selectFile>
+  </div>
+  <button type="submit" class="btn btn-primary" >Sign Up</button>
+</form>
+<!--[disabled]="SignUpForm.invalid"-->

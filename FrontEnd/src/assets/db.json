@@ -1,0 +1,166 @@
+{
+  "login": [
+    {
+      "id": 1,
+      "name": "Mohamed Ebrahem",
+      "username": "MEbrahem",
+      "password": "123",
+      "type": "Admin"
+    },
+    {
+      "id": 2,
+      "name": "Mena Afefe",
+      "username": "MAfefe",
+      "password": "123",
+      "type": "Professor"
+    },
+    {
+      "id": 3,
+      "name": "Kero Afefe",
+      "username": "KAfefe",
+      "password": "123",
+      "type": "Professor"
+    }
+  ],
+  "courses": [
+    {
+      "title": "Angular 7 - The Complete Guide",
+      "date": "2019-01-29",
+      "duration": 1688,
+      "isTopRated": true,
+      "authors": [
+        2
+      ],
+      "description": "This course starts from scratch, you neither need to know Angular 1 nor Angular 2! From Setup to Deployment, this course covers it all! You'll learn all about Components, Directives, Services, Forms, Http Access, Authentication, Optimizing an Angular App with Modules and Offline Compilation and much more - and in the end: You'll learn how to deploy an application!",
+      "id": 1,
+      "imageUrl": "http://localhost:4200/assets/img/angular_logo.png",
+      "loginID": "2"
+    },
+    {
+      "title": "34",
+      "date": "2021-11-20",
+      "duration": 234,
+      "description": "dsf",
+      "authors": [
+        6
+      ],
+      "isTopRated": true,
+      "id": 2,
+      "loginID": "2",
+      "imageUrl": "http://localhost:4200/assets/img/GA8g15e.jpg"
+    },
+    {
+      "title": "fh",
+      "date": "2021-11-04",
+      "duration": 76,
+      "description": "n",
+      "authors": [
+        4
+      ],
+      "isTopRated": true,
+      "id": 3,
+      "imageUrl": "http://localhost:4200/assets/img/top-18-most-common-angularjs-developer-mistakes-41f9ad303a51db70e4a5204e101e7414.png",
+      "loginID": "2"
+    },
+    {
+      "title": "jkhk",
+      "date": "2021-11-03",
+      "duration": 1,
+      "description": "jhk",
+      "authors": [
+        4
+      ],
+      "isTopRated": true,
+      "id": 4,
+      "imageUrl": "http://localhost:4200/assets/img/315x175._-Angular-js_02-1-2.jpg",
+      "loginID": "2"
+    }
+  ],
+  "Author": [
+    {
+      "id": 1,
+      "firstName": "Ermin",
+      "lastName": "Kreponic"
+    },
+    {
+      "id": 2,
+      "firstName": "Mosh",
+      "lastName": "Hamedani"
+    },
+    {
+      "id": 3,
+      "firstName": "Unknown",
+      "lastName": "Assistant"
+    },
+    {
+      "id": 4,
+      "firstName": "Brad",
+      "lastName": "Traversy"
+    },
+    {
+      "id": 5,
+      "firstName": "Maximilian",
+      "lastName": "Schwarzmüller"
+    },
+    {
+      "id": 6,
+      "firstName": "Ermin",
+      "lastName": "Kreponic"
+    },
+    {
+      "id": 7,
+      "firstName": "Mosh",
+      "lastName": "Hamedani"
+    },
+    {
+      "id": 8,
+      "firstName": "Unknown",
+      "lastName": "Assistant"
+    },
+    {
+      "id": 9,
+      "firstName": "Brad",
+      "lastName": "Traversy"
+    },
+    {
+      "id": 10,
+      "firstName": "Maximilian",
+      "lastName": "Schwarzmüller"
+    },
+    {
+      "id": 11,
+      "firstName": "Maximilian",
+      "lastName": "Schwarzmüller"
+    },
+    {
+      "id": 12,
+      "firstName": "Maximilian",
+      "lastName": "Schwarzmüller"
+    },
+    {
+      "id": 13,
+      "firstName": "mena sdfsdfdsfdsfs",
+      "lastName": "Schwarzmüller"
+    },
+    {
+      "id": 14,
+      "firstName": "Maximilian asfdsfdsfhdsifhidsohfuosidiuf",
+      "lastName": "Schwarzmüller"
+    },
+    {
+      "id": 15,
+      "firstName": "Maximilian",
+      "lastName": "Schwarzmüller"
+    },
+    {
+      "id": 16,
+      "firstName": "Maximilian",
+      "lastName": "Schwarzmüller"
+    },
+    {
+      "id": 17,
+      "firstName": "Maximilian",
+      "lastName": "Schwarzmüller"
+    }
+  ]
+}
