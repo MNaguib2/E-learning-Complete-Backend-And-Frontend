@@ -13,6 +13,7 @@ export class SignUpComponent implements OnInit {
   imageAvatar = 'assets/Avatar/male.png';
   Image!:File; 
   Gender : string = 'Male';
+  message ='';
   @ViewChild(PlaceHolderDirective, { static: false }) alertHost!: PlaceHolderDirective;
   constructor(private service : AuthService , 
     private http : HttpClient,
@@ -68,8 +69,9 @@ SubmitSignUp(SignUpForm : NgForm){
     formData.append('confirmPassword', SignUpForm.form.value.confirmpassword);
     formData.append('Date', SignUpForm.form.value.date);
     formData.append('Gender', this.Gender);
-    this.service.PostSignUp(formData).subscribe(data => {
+    this.service.PostSignUp(formData).subscribe((data : any) => {
       console.log(data);
+      this.message = data.body.Message;
     },(error) => {
       this.ShowErrorMesage(error);
     });

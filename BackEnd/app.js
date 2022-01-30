@@ -4,6 +4,7 @@ const mongoose =  require('mongoose');
 const User = require ('./models/User');
 const url = 'mongodb://127.0.0.1:27017/E-Learning';
 const AuthRoute = require('./Route/Auth');
+const ConfirmRoute = require('./Route/Confirm');
 const multer =require('multer');
 const app = express();
 
@@ -20,7 +21,8 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/Admin', AuthRoute)
+app.use('/Admin', AuthRoute);
+app.use('/Confirm', ConfirmRoute)
 
 mongoose.connect(url)
 .then(result => {

@@ -2,6 +2,8 @@ const user = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemail = require('nodemailer');
+const crypto = require('crypto');
+const DataShare  = require('../dataShare');
 var User;
 
 const transport = nodemail.createTransport({
@@ -25,13 +27,15 @@ exports.PostSignUp = (req, res, next) => {
     const Gender = req.body.Gender;
     const UserName = username(FirstName, LastName);
     const status = 'pinding';
-
+    const emailEncryption = jwt.sign({email}, DataShare.passwordconfirm,{expiresIn: DataShare.ExpireInJsonWebToken});
+    //console.log(emailEncryption);
+    // console.log(jwt.decode(emailEncryption , 'test'));
     user.findOne({ email: email })
         .then(result => {
             if (!result) {
                 if (pasword === confirmPassword) {
-                    const HashPassword = bcrypt.hashSync(pasword, 12);
-                    const Token = require('crypto').randomBytes(32).toString('hex');
+                    const HashPassword = bcrypt.hashSync(pasword, 14);
+                    const Token = crypto.randomBytes(32).toString('hex');
                     const restTokenExpiration = Date.now() + (3600000 * 3);
                     //console.log( new Date(restTokenExpiration));
                     //*
@@ -55,8 +59,8 @@ exports.PostSignUp = (req, res, next) => {
                                     subject: "Activation",
                                     html: `
                                     <h1 style="text-align:center;">Hello In Website E-Learning</h1> 
-                                    <h1 style="text-align:left;">Welcome I Name Eng: Mena Afefe</h1> 
-                                    <p style="text-align:left;">Please Click this <strong><a href="http://localhost:3000/Confirm/${Token}">link</a></strong> to set a Activation Account.</p>
+                                    <h1 style="text-align:left;">Welcome<div> I Name Eng: Mena Afefe</div></h1> 
+                                    <p style="text-align:left;">Please Click this <strong><a href="http://localhost:3000/Confirm/${Token}/${emailEncryption}">link</a></strong> to set a Activation Account.</p>
                                   `
                                 }).then(result => {
                                     //console.log(result);
@@ -72,8 +76,8 @@ exports.PostSignUp = (req, res, next) => {
                             }
                         }).catch(err => {
                             console.log(err);
-                            const error = new Error('this Is Error Event In Send Mail Please Call Developer Mena Afefe');
-                            error.StatusCode = 501;
+                            const error = new Error('Please Add Valid Data Add All Requirments');
+                            error.StatusCode = 422;
                             return next(error);
                         })
                 }
