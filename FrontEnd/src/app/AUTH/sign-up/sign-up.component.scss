@@ -11,3 +11,20 @@
     width: 20%;
     height: 20%;
 }
+.log-out {
+    display: block;
+    border: 1px solid #CEE39D;
+    //width: 75px;
+    background-color: #0D5786;
+    color: #ffffff;
+    font-size: 1em;
+    padding: 5px;
+    margin-left: 1em;
+    &:hover {
+        border: 1px solid #0D5786;
+        color: #0D5786;
+        font-weight: bold;
+        background-color: #ffffff;
+        cursor: pointer;
+    }
+}

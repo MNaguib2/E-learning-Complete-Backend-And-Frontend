@@ -1,5 +1,6 @@
+
 <ng-template appPlaceHolder></ng-template>
-<ng-container *ngIf="message.length == 0; else Response">
+<ng-container *ngIf="message.length === 0 && BasicUrl !== 'confirm'; else Response">
 <form class="container" #SignUpForm="ngForm" (submit)="SubmitSignUp(SignUpForm)">
   <div class="row">
     <div class="col-md-6">
@@ -67,6 +68,24 @@
 </form>
 </ng-container>
 <ng-template #Response>
-
+  <ng-container *ngIf="BasicUrl !== 'confirm'; else Activation">
+  <h1 class="text-success" style="text-align: center;">{{Status}}</h1>
+  <hr>
+  <h3 class="text-secondary" style="text-align: center;">{{message}}</h3>
+</ng-container>
+<ng-template #Activation>
+  <div class="row">
+    <div class="col-4"></div>
+    <h1 class="text-success col-4" style="text-align: center;">{{Status}}</h1>
+    <div class="col-4"></div>
+    <hr *ngIf="Status !== ''">
+    <div class="col-4"></div>
+    <h3 class="text-secondary col-4" style="text-align: center;">{{message}}</h3>
+    <div class="col-4"></div>
+    <div class="col-4"></div>
+    <button routerLink="/" class="log-out col-4">LogIn</button>
+    <div class="col-4"></div>
+  </div>
+</ng-template>
 </ng-template>
 <!--[disabled]="SignUpForm.invalid"-->

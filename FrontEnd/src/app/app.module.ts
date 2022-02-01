@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import { FooterComponent } from './core/components/footer/footer.component';
-import { LoginModule } from './login/login.module';
 import { CoursesListComponent } from './courses/courses-list/courses-list.component';
 import { EditCourseComponent } from './courses/edit-course/edit-course.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -16,11 +15,10 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoaderInterceptor } from './core/service/loader.interceptor';
 import { CreatCourseComponent } from './courses/creat-course/creat-course.component'; 
 import { CourseRouting } from './courses/course-routing.module';
-import { AuthGuard } from './courses/services/AuthGuard.service';
 import { DetialsComponent } from './courses/detials/detials.component';
-import { SignUpComponent } from './AUTH/sign-up/sign-up.component';
 import { ErrorComponent } from './core/components/error/error.component';
 import { PlaceHolderDirective } from './core/service/place-holder.directive';
+import { AuthModule } from './AUTH/Service/Auth.module';
 
 @NgModule({
   declarations: [
@@ -32,9 +30,7 @@ import { PlaceHolderDirective } from './core/service/place-holder.directive';
     LoaderComponent,
     CreatCourseComponent,
     DetialsComponent,
-    SignUpComponent,
     ErrorComponent,
-    PlaceHolderDirective
   ],
   imports: [
     CommonModule,
@@ -43,15 +39,14 @@ import { PlaceHolderDirective } from './core/service/place-holder.directive';
     BrowserModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    LoginModule,
     MatProgressSpinnerModule,
-    CourseRouting
+    CourseRouting,
+    AuthModule
   ],
   providers: [
     LoaderService,
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
-    AuthGuard,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

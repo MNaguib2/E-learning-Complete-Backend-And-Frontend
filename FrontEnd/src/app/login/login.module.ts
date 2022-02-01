@@ -11,7 +11,7 @@ import { NewsComponent } from './news/news.component';
 
 
 @NgModule({
-  declarations: [LoginComponent, NewsComponent],
+  declarations: [ NewsComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -21,7 +21,7 @@ import { NewsComponent } from './news/news.component';
     
   ],
   exports: [
-    LoginComponent
+    //LoginComponent
   ],
 })
 export class LoginModule { }

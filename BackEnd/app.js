@@ -49,7 +49,7 @@ mongoose.connect(url)
 }).catch(err => console.log(err));
 
 app.use((error, req, res, next) => {
-    console.log(error);
+    //console.log(error);
     const StatusCode = Number(JSON.stringify(error).slice(14, 17));
     const message = error.toString().split(':')[1].trim();    
     return res.status(StatusCode).json({

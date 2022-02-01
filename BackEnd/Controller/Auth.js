@@ -27,7 +27,7 @@ exports.PostSignUp = (req, res, next) => {
     const Gender = req.body.Gender;
     const UserName = username(FirstName, LastName);
     const status = 'pinding';
-    const emailEncryption = jwt.sign({email}, DataShare.passwordconfirm,{expiresIn: DataShare.ExpireInJsonWebToken});
+    const emailEncryption = jwt.sign({email}, DataShare.passwordconfirm,{expiresIn: DataShare.ExpireInJsonWebToken},{ignoreExpiration: true});
     //console.log(emailEncryption);
     // console.log(jwt.decode(emailEncryption , 'test'));
     user.findOne({ email: email })
@@ -56,16 +56,17 @@ exports.PostSignUp = (req, res, next) => {
                                 transport.sendMail({
                                     from: "teste.learningnodejs@gmail.com",
                                     to: email,
-                                    subject: "Activation",
+                                    subject: "Register Ok!",
                                     html: `
                                     <h1 style="text-align:center;">Hello In Website E-Learning</h1> 
                                     <h1 style="text-align:left;">Welcome<div> I Name Eng: Mena Afefe</div></h1> 
-                                    <p style="text-align:left;">Please Click this <strong><a href="http://localhost:3000/Confirm/${Token}/${emailEncryption}">link</a></strong> to set a Activation Account.</p>
+                                    <p style="text-align:left;">Please Click this <strong><a href="http://localhost:4200/confirm/${Token}/${emailEncryption}">link</a></strong> to set a Activation Account.</p>
                                   `
                                 }).then(result => {
                                     //console.log(result);
                                     return res.status(200).json({
-                                        Message : 'Done! Please Check Your Mail!'
+                                        Message : 'Done! Please Check Your Mail!',
+                                        Status : 'Register'
                                     });
                                 }).catch(err => {
                                     console.log(err);
@@ -75,7 +76,7 @@ exports.PostSignUp = (req, res, next) => {
                                 })
                             }
                         }).catch(err => {
-                            console.log(err);
+                            //console.log(err);
                             const error = new Error('Please Add Valid Data Add All Requirments');
                             error.StatusCode = 422;
                             return next(error);
