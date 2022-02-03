@@ -19,7 +19,7 @@ export interface User {
 })
 
 export class AuthService {
-  public readonly API_URL = 'http://localhost:3000/Admin';
+  public readonly API_URL = 'http://localhost:3000/';
   public userData$ = new BehaviorSubject<any>('');
 
   constructor(
@@ -96,6 +96,9 @@ export class AuthService {
     )
   }
   PostSignUp(Data : FormData){
-   return this.http.post(this.API_URL+'/SigUp' , Data , { observe: 'response' });
+   return this.http.post(this.API_URL+'Admin/SigUp' , Data , { observe: 'response' });
+  }
+  getRestPass(email:string){
+    return this.http.get(this.API_URL +'Confirm/RestPassword/'+ email, {observe: 'response'});
   }
 }

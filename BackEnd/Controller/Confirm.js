@@ -1,7 +1,9 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const Password = require('../dataShare').passwordconfirm;
+const DataShare = require('../dataShare');
 const nodemail = require('nodemailer');
+const crypto = require('crypto');
+const FormateEmails = require('../Emails Format/ConfirmEmails');
 const transport = nodemail.createTransport({
     service: "gmail",
     auth: {
@@ -13,9 +15,9 @@ const transport = nodemail.createTransport({
     }
 })
 
-exports.POSTSignUPActivation = (req, res, next) => {
+exports.GETSignUPActivation = (req, res, next) => {
     const Token = req.params.Token;
-    const Email = jwt.verify(req.params.email, Password, (err, decoded) => {
+    const Email = jwt.verify(req.params.email, DataShare.passwordconfirm, (err, decoded) => {
         if (!err) {
             //console.log(decoded);
             //console.log(new Date(decoded.exp));
@@ -51,26 +53,7 @@ exports.POSTSignUPActivation = (req, res, next) => {
                                         from: "teste.learningnodejs@gmail.com",
                                         to: result.email,
                                         subject: "Activation Successfully !",
-                                        html: `
-                                        <h1 style="text-align:center; color: #008000">Welcome In E-Learning</h1>
-                                        <hr>
-                                        <div style="margin-left: 15px;margin-right: 15px; text-align:left;">
-                                        <h1 style="font-family:courier; color: #002080">Greetings from the engineer 
-                                        <div style="font-family:verdana; margin-left: 28vw">Mena Afefe Fawze</div> </h1>
-                                        <br>
-                                        <h2 style="color: #000080;">To Do Login You Need To save This UserName </h2> 
-                                        <h2 style="color: #000080;">Your UserName : - ${result.UserName}</h2>
-                                        <h2 style="color: #000080;">Your ID : - ${result._id}</h2>
-                                        <div style="color:#400080; text-align:center;">
-                                        <p>If You have any problem You can call me via Phone Or email But Please To Easy Help
-                                         You Must Save Your Id and Your User-name to help me can solve any problem for you in easy ThankYou 
-                                         and I will Leave All My Content In Below</p>
-                                         <h3>Phone :- +201022448327</h3>
-                                         <h3>Email :- mena_afefe3000@yahoo.com</h3>
-                                        </div>
-                                        <h3 style="color:#400080;">best wishes!</h4>
-                                        </div>
-                                      `
+                                        html: FormateEmails.ActivationFormatEmail(result.UserName, result._id)
                                     }).then(result => {
                                         //console.log(result);
                                         return res.status(200).json({
@@ -100,9 +83,60 @@ exports.POSTSignUPActivation = (req, res, next) => {
             error.StatusCode = 404;
             return next(error);
         })
+}
 
-    // console.log(Token + ' ' , Email);
-    // console.log(new Date(Email.exp));
-    // const restTokenExpiration = Date.now() + (3600000 * 3);
-    // console.log( new Date(restTokenExpiration));
+exports.GetRestPassword = (req, res, next) => {
+    const email = req.params.email;
+    User.findOne({ email: email })
+        .then(result => {
+            if (result && result.status === 'work' || 'pinding') {
+                const Token = crypto.randomBytes(32).toString('hex');
+                const TokenEncryption = jwt.sign({ Token }, result.UserName, { expiresIn: DataShare.ExpireInJsonWebToken });
+                result.restTokenExpiration = Date.now() + (3600000 * 3);
+                result.restToken = TokenEncryption;
+                result.status = 'pinding';
+                result.save()
+                    .then(SaveDone => {
+                        if (SaveDone) {
+                            transport.sendMail({
+                                from: "teste.learningnodejs@gmail.com",
+                                to: result.email,
+                                subject: "Rest Password!",
+                                html: FormateEmails.RestPasswordFormatEmail(`http://localhost:4200/rest/${TokenEncryption}`)
+                            })
+                                .then(result => {
+                                    //console.log(result);
+                                    if (result) {
+                                        return res.status(200).json({
+                                            Message: 'Done! Please Check Your Email To get Link Rest!',
+                                            Status: 'Rest Request!'
+                                        });
+                                    }
+                                }).catch(err => {
+                                    //console.log(err);
+                                    const error = new Error('this Is Error Event In Send Mail Please Call Developer Mena Afefe');
+                                    error.StatusCode = 501;
+                                    return next(error);
+                                })
+                        }
+                    })
+                    .catch(err => {
+                        const error = new Error('This error Number 6 Please send to Developer mena_afefe3000@yahoo.com');
+                        error.StatusCode = 404;
+                        return next(error);
+                    });
+            } else {
+                const error = new Error('This error Number 5 Please send to Developer mena_afefe3000@yahoo.com');
+                error.StatusCode = 404;
+                return next(error);
+            }
+        }).catch(err => {
+            console.log(err);
+            const error = new Error('occurred error! number 4 Please send to Developer mena_afefe3000@yahoo.com');
+            error.StatusCode = 400;
+            return next(error);
+        })
+    // setTimeout(() => {
+    //     res.end();
+    // }, 10000);    
 }

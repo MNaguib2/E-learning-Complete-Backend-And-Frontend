@@ -17,9 +17,7 @@ import { CreatCourseComponent } from './courses/creat-course/creat-course.compon
 import { CourseRouting } from './courses/course-routing.module';
 import { DetialsComponent } from './courses/detials/detials.component';
 import { ErrorComponent } from './core/components/error/error.component';
-import { PlaceHolderDirective } from './core/service/place-holder.directive';
 import { AuthModule } from './AUTH/Service/Auth.module';
-
 @NgModule({
   declarations: [
     AppComponent,

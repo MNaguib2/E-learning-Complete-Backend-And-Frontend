@@ -5,12 +5,15 @@ const User = require ('./models/User');
 const url = 'mongodb://127.0.0.1:27017/E-Learning';
 const AuthRoute = require('./Route/Auth');
 const ConfirmRoute = require('./Route/Confirm');
+const path = require('path');
 const multer =require('multer');
 const app = express();
 
 app.use(bodyparse.json());
 
 app.use(multer().array());
+
+app.use('',express.static(path.join(__dirname, 'Data')));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
