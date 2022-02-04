@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, EMPTY, Subscription, Observer } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { take, tap } from 'rxjs/operators';
+import { HostServer } from '../../core/service/MainDataShare';
 
 export interface User {
   name : string;
@@ -19,7 +20,7 @@ export interface User {
 })
 
 export class AuthService {
-  public readonly API_URL = 'http://localhost:3000/';
+  public readonly API_URL = HostServer;
   public userData$ = new BehaviorSubject<any>('');
 
   constructor(
@@ -95,10 +96,18 @@ export class AuthService {
     })
     )
   }
+  /*this is New Code to connect with internal API */
   PostSignUp(Data : FormData){
    return this.http.post(this.API_URL+'Admin/SigUp' , Data , { observe: 'response' });
   }
   getRestPass(email:string){
     return this.http.get(this.API_URL +'Confirm/RestPassword/'+ email, {observe: 'response'});
+  }
+  getConfirmActivation(Token: string, id: string){
+    return this.http.get(`${this.API_URL}/Confirm/${Token}/${id}`, { observe: 'response' })
+  }
+  postNewPassword(username: string, password: string, confirmpassword: string, url: string){
+    //console.log(username, password, confirmpassword)
+    return this.http.post(this.API_URL+'Confirm/ActiveNewPassword/'+url, {username:username, password:password, confirmPassword:confirmpassword});
   }
 }

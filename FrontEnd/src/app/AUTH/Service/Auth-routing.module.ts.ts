@@ -10,6 +10,7 @@ const routes : Routes = [
     { path: 'signup' , component: SignUpComponent},
     { path: 'confirm/:Token/:Id' , component: SignUpComponent},
     { path: 'ForgetPassword' , component: ForgetPasswordComponent},
+    { path: 'rest/:Token' , component: ForgetPasswordComponent},
 ]
 
 @NgModule({

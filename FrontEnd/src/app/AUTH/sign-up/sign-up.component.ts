@@ -31,7 +31,7 @@ export class SignUpComponent implements OnInit {
     //console.log(this.Route.snapshot.url[0].path === 'confirm')
     this.Route.params.subscribe(data => {
       if (this.BasicUrl === 'confirm') {
-        this.http.get(`http://localhost:3000/Confirm/${data.Token}/${data.Id}`, { observe: 'response' }).subscribe((ReciveData:any) => {
+        this.service.getConfirmActivation(data.Token,data.Id).subscribe((ReciveData:any) => {
           //console.log(ReciveData);
           this.Status = ReciveData.body.Status;
           this.message = ReciveData.body.Message;
@@ -75,8 +75,6 @@ export class SignUpComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-  URLTest = 'http://localhost:3000/feed/test';
-  RealURL = 'http://localhost:3000/Admin/SigUp';
   SubmitSignUp(SignUpForm: NgForm) {
     const formData = new FormData;
     if (this.Image) {

@@ -89,7 +89,7 @@ exports.GetRestPassword = (req, res, next) => {
     const email = req.params.email;
     User.findOne({ email: email })
         .then(result => {
-            if (result && result.status === 'work' || 'pinding') {
+            if (result && (result.status === 'work' || 'pinding')) {
                 const Token = crypto.randomBytes(32).toString('hex');
                 const TokenEncryption = jwt.sign({ Token }, result.UserName, { expiresIn: DataShare.ExpireInJsonWebToken });
                 result.restTokenExpiration = Date.now() + (3600000 * 3);
@@ -102,7 +102,7 @@ exports.GetRestPassword = (req, res, next) => {
                                 from: "teste.learningnodejs@gmail.com",
                                 to: result.email,
                                 subject: "Rest Password!",
-                                html: FormateEmails.RestPasswordFormatEmail(`http://localhost:4200/rest/${TokenEncryption}`)
+                                html: FormateEmails.RestPasswordFormatEmail(`http://${DataShare.HostServer}:4200/rest/${TokenEncryption}`)
                             })
                                 .then(result => {
                                     //console.log(result);
@@ -139,4 +139,29 @@ exports.GetRestPassword = (req, res, next) => {
     // setTimeout(() => {
     //     res.end();
     // }, 10000);    
+}
+exports.PostNewPassword = (req, res, next) => {
+    const username = req.body.username;
+    const Token = req.params.Token;
+    const Password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+    User.findOne({ UserName: username })
+        .then(result => {
+            if (result) {
+
+            } else {
+                const error = new Error('This error Number 8 Please send to Developer mena_afefe3000@yahoo.com');
+                error.StatusCode = 404;
+                return next(error);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            const error = new Error('occurred error! number 7 Please send to Developer mena_afefe3000@yahoo.com');
+            error.StatusCode = 400;
+            return next(error);
+        })
+    setTimeout(() => {
+        res.end();
+    }, 10000);
 }

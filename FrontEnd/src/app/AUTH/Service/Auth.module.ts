@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuthGuard } from "src/app/AUTH/Service/AuthGuard.service";
 import { PlaceHolderDirective } from "src/app/core/service/place-holder.directive";
 import { ForgetPasswordComponent } from "../forget-password/forget-password.component";
@@ -21,14 +21,15 @@ import { LoginGuard } from "./Login-Guard.service";
     //     // LoginComponent,
     //     //PlaceHolderDirective
     //   ],
-    imports:[
+    imports: [
         CommonModule, //to Use Directive ngIf and ngFor etc..
-        FormsModule, // ti Use NgModule
-        AuthRouting
+        FormsModule, // it Use NgModule
+        AuthRouting,
+        ReactiveFormsModule
     ],
-    providers:[
+    providers: [
         AuthGuard,
-        LoginGuard
+        LoginGuard,
     ]
 })
 

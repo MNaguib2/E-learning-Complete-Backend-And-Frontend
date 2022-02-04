@@ -60,7 +60,7 @@ exports.PostSignUp = (req, res, next) => {
                                     html: `
                                     <h1 style="text-align:center;">Hello In Website E-Learning</h1> 
                                     <h1 style="text-align:left;">Welcome<div> I Name Eng: Mena Afefe</div></h1> 
-                                    <p style="text-align:left;">Please Click this <strong><a href="http://localhost:4200/confirm/${Token}/${emailEncryption}">link</a></strong> to set a Activation Account.</p>
+                                    <p style="text-align:left;">Please Click this <strong><a href="http://${DataShare.HostServer}:4200/confirm/${Token}/${emailEncryption}">link</a></strong> to set a Activation Account.</p>
                                   `
                                 }).then(result => {
                                     //console.log(result);
