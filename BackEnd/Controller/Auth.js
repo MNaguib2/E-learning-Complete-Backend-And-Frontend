@@ -3,7 +3,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemail = require('nodemailer');
 const crypto = require('crypto');
-const DataShare  = require('../dataShare');
+const CryptoJS = require('crypto-js');
+const DataShare = require('../dataShare');
+const FormateEmails = require('../Emails Format/ConfirmEmails');
 var User;
 
 const transport = nodemail.createTransport({
@@ -18,7 +20,7 @@ const transport = nodemail.createTransport({
 })
 
 exports.PostSignUp = (req, res, next) => {
-    const email = req.body.email;
+    const email = (req.body.email).toLowerCase();
     const pasword = req.body.pasword;
     const confirmPassword = req.body.confirmPassword;
     const FirstName = req.body.FirstName;
@@ -27,17 +29,18 @@ exports.PostSignUp = (req, res, next) => {
     const Gender = req.body.Gender;
     const UserName = username(FirstName, LastName);
     const status = 'pinding';
-    const emailEncryption = jwt.sign({email}, DataShare.passwordconfirm,{expiresIn: DataShare.ExpireInJsonWebToken},{ignoreExpiration: true});
+    const emailEncryption = jwt.sign({ email }, DataShare.passwordconfirm, { expiresIn: DataShare.ExpireInJsonWebToken }, { ignoreExpiration: true });
     //console.log(emailEncryption);
     // console.log(jwt.decode(emailEncryption , 'test'));
     user.findOne({ email: email })
         .then(result => {
+            //console.log(result);
             if (!result) {
                 if (pasword === confirmPassword) {
                     const HashPassword = bcrypt.hashSync(pasword, 14);
                     const Token = crypto.randomBytes(32).toString('hex');
                     const restTokenExpiration = Date.now() + (3600000 * 3);
-                    //console.log( new Date(restTokenExpiration));
+                    //console.log(new Date(restTokenExpiration));
                     //*
                     User = new user({
                         email: email,
@@ -65,8 +68,8 @@ exports.PostSignUp = (req, res, next) => {
                                 }).then(result => {
                                     //console.log(result);
                                     return res.status(200).json({
-                                        Message : 'Done! Please Check Your Mail!',
-                                        Status : 'Register'
+                                        Message: 'Done! Please Check Your Mail!',
+                                        Status: 'Register'
                                     });
                                 }).catch(err => {
                                     console.log(err);
@@ -81,6 +84,10 @@ exports.PostSignUp = (req, res, next) => {
                             error.StatusCode = 422;
                             return next(error);
                         })
+                } else {
+                    const error = new Error('this Password Is not equal confirmPassword');
+                    error.StatusCode = 501;
+                    throw error;
                 }
             } else {
                 const error = new Error('this Email Already Register');
@@ -107,4 +114,103 @@ username = (Fname, LName) => {
             }).catch(err => console.log(err));
     } while (againAnotherID)
     return UserName;
+}
+
+exports.GetRestPassword = (req, res, next) => {
+    const email = req.params.email;
+    user.findOne({ email: email })
+        .then(result => {
+            //console.log(result);
+            if (result && (result.status === 'work' || result.status === 'pinding')) {
+                const Token = crypto.randomBytes(32).toString('hex');
+                const TokenEncryption = jwt.sign({ Token }, result.UserName, { expiresIn: DataShare.ExpireInJsonWebToken });
+                result.restTokenExpiration = Date.now() + (3600000 * 3);
+                result.restToken = TokenEncryption;
+                result.status = 'pinding';
+                result.save()
+                    .then(SaveDone => {
+                        if (SaveDone) {
+                            transport.sendMail({
+                                from: "teste.learningnodejs@gmail.com",
+                                to: result.email,
+                                subject: "Rest Password!",
+                                html: FormateEmails.RestPasswordFormatEmail(`http://${DataShare.HostServer}:4200/rest/${TokenEncryption}`)
+                            })
+                                .then(result => {
+                                    //console.log(result);
+                                    if (result) {
+                                        return res.status(200).json({
+                                            Message: 'Done! Please Check Your Email To get Link Rest!',
+                                            Status: 'Rest Request!'
+                                        });
+                                    }
+                                }).catch(err => {
+                                    //console.log(err);
+                                    const error = new Error('this Is Error Event In Send Mail Please Call Developer Mena Afefe');
+                                    error.StatusCode = 501;
+                                    return next(error);
+                                })
+                        }
+                    })
+                    .catch(err => {
+                        const error = new Error('This error Number 6 Please send to Developer mena_afefe3000@yahoo.com');
+                        error.StatusCode = 404;
+                        return next(error);
+                    });
+            } else {
+                const error = new Error('This error Number 5 Please send to Developer mena_afefe3000@yahoo.com');
+                error.StatusCode = 404;
+                return next(error);
+            }
+        }).catch(err => {
+            //console.log(err);
+            const error = new Error('occurred error! number 4 Please send to Developer mena_afefe3000@yahoo.com');
+            error.StatusCode = 400;
+            return next(error);
+        })
+}
+var signature;
+exports.postSigin = (req, res, next) => {
+    user.findOne({ UserName: req.body.username })
+        .then(result => {
+            if(result){
+                signature = crypto.randomBytes(16).toString('hex');
+                res.json({signature});
+            }else{
+                const error = new Error('This error Number 12 Please send to Developer mena_afefe3000@yahoo.com');
+                error.StatusCode = 404;
+                return next(error);
+            }            
+        }).catch(err => {
+            const error = new Error('occurred error! number 11 Please send to Developer mena_afefe3000@yahoo.com');
+            error.StatusCode = 400;
+            return next(error);
+        })
+}
+exports.PostConfirmPassord = (req, res, next) => {
+    const Password = CryptoJS.AES.decrypt(req.body.password , signature).toString(CryptoJS.enc.Utf8);
+    user.findOne({ UserName: req.body.username })
+    .then(result => {
+        if(result && bcrypt.compareSync(Password, result.password)){
+            const Token = jwt.sign({id: result._id.toString()} , DataShare.passwordconfirm ,{expiresIn: DataShare.ExpireInJsonWebToken});
+            res.status(202).json({
+                Message : `HellO ${result.Name}`,
+                Token: Token,
+                UserData : 
+                {name : result.Name, id : result._id ,type : result.Type, Gender: result.Gender ,DataBorn: result.DataBorn,email: result.email}
+            })
+        }else{
+            const error = new Error('occurred error! number 14 Please send to Developer mena_afefe3000@yahoo.com');
+            error.StatusCode = 400;
+            return next(error); 
+        }
+    }).catch(err => {
+        const error = new Error('occurred error! number 13 Please send to Developer mena_afefe3000@yahoo.com');
+            error.StatusCode = 400;
+            return next(error);
+    })
+    signature = '';
+    setTimeout(() => {
+        res.end();
+    }, 100000);
 }

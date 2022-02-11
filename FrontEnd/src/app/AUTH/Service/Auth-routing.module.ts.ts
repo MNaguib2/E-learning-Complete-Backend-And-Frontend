@@ -8,8 +8,8 @@ import { SignUpComponent } from "../sign-up/sign-up.component";
 const routes : Routes = [
     { path: '', component: LoginComponent},
     { path: 'signup' , component: SignUpComponent},
-    { path: 'confirm/:Token/:Id' , component: SignUpComponent},
     { path: 'ForgetPassword' , component: ForgetPasswordComponent},
+    { path: 'confirm/:Token/:Id' , component: SignUpComponent},
     { path: 'rest/:Token' , component: ForgetPasswordComponent},
 ]
 

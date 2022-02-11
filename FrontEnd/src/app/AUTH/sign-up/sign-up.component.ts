@@ -36,6 +36,7 @@ export class SignUpComponent implements OnInit {
           this.Status = ReciveData.body.Status;
           this.message = ReciveData.body.Message;
         }, (err) => {
+          console.log(err);
           this.ShowErrorMesage(err);
         })
       }

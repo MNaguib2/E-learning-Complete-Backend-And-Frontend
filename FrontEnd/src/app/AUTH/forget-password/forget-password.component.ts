@@ -16,25 +16,24 @@ export class ForgetPasswordComponent implements OnInit {
   message = '';
   status = '';
   FormNewPassword: FormGroup;
-  constructor(private service : AuthService,
+  constructor(private service: AuthService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private Route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.FormNewPassword = new FormGroup({
-      'Username' : new FormControl(null,[Validators.required]),
-      'Password' : new FormControl(null,[Validators.required , Validators.minLength(8)]),
-      'ConfirmPassword' : new FormControl(null,[Validators.required, Validators.minLength(8)]),
-    },{ validators: this.checkPasswords })
+      'Username': new FormControl(null, [Validators.required]),
+      'Password': new FormControl(null, [Validators.required, Validators.minLength(8)]),
+      'ConfirmPassword': new FormControl(null, [Validators.required, Validators.minLength(8)]),
+    }, { validators: this.checkPasswords })
   }
-  BasicUrl = this.Route.snapshot.url[0].path;  
-  Url : string = this.Route.snapshot.url[1].path;
-  Restpassword(RestPassword : NgForm){
-    this.service.getRestPass(RestPassword.value.email).subscribe((data : any) => {
+  BasicUrl = this.Route.snapshot.url[0].path;
+  SendTokenToEmail(RestPassword: NgForm) {
+    this.service.getRestPass(RestPassword.value.email).subscribe((data: any) => {
       //console.log(data);
       this.message = data.body.Message;
       this.status = data.body.Status;
-    },(error) => {
+    }, (error) => {
       //console.log(error);
       this.ShowErrorMesage(error);
     })
@@ -50,18 +49,21 @@ export class ForgetPasswordComponent implements OnInit {
     componentRef.instance.StatusCode = error.status;
     componentRef.instance.Error = error.error.message;
   }
-  ResetPassword(){
+  ResetPassword() {
     //console.log(this.FormNewPassword);
     this.service.postNewPassword(this.FormNewPassword.value.Username,
-      this.FormNewPassword.value.Password,this.FormNewPassword.value.ConfirmPassword,
-      this.Url).subscribe((data:any) => {
-        console.log(data);
-      },(error) => {
-        console.log(error);
+      this.FormNewPassword.value.Password, this.FormNewPassword.value.ConfirmPassword,
+      this.Route.snapshot.url[1].path).subscribe((data: any) => {
+        //console.log(data);
+        this.message = data.body.Message;
+        this.status = data.body.Status;
+        console.log(this.message);
+      }, (error) => {
+        //console.log(error);
         this.ShowErrorMesage(error);
       })
   }
-  checkPasswords: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => { 
+  checkPasswords: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
     let pass = group.get('Password').value;
     let confirmPass = group.get('ConfirmPassword').value
     return pass === confirmPass ? null : { notSame: true }

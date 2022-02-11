@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const DataShare = require('../dataShare');
 const nodemail = require('nodemailer');
 const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 const FormateEmails = require('../Emails Format/ConfirmEmails');
 const transport = nodemail.createTransport({
     service: "gmail",
@@ -38,7 +39,7 @@ exports.GETSignUPActivation = (req, res, next) => {
         .then(result => {
             if (result) {
                 if (Date.now() > result.restTokenExpiration) {
-                    const error = new Error('PLease Use RestPassword To get Another URL Activation');
+                    const error = new Error('PLease Back To Developer to send another Link Activation! email: mena_afefe3000@yahoo.com');
                     error.StatusCode = 408;
                     return next(error);
                 } else {
@@ -85,83 +86,62 @@ exports.GETSignUPActivation = (req, res, next) => {
         })
 }
 
-exports.GetRestPassword = (req, res, next) => {
-    const email = req.params.email;
-    User.findOne({ email: email })
-        .then(result => {
-            if (result && (result.status === 'work' || 'pinding')) {
-                const Token = crypto.randomBytes(32).toString('hex');
-                const TokenEncryption = jwt.sign({ Token }, result.UserName, { expiresIn: DataShare.ExpireInJsonWebToken });
-                result.restTokenExpiration = Date.now() + (3600000 * 3);
-                result.restToken = TokenEncryption;
-                result.status = 'pinding';
-                result.save()
-                    .then(SaveDone => {
-                        if (SaveDone) {
-                            transport.sendMail({
-                                from: "teste.learningnodejs@gmail.com",
-                                to: result.email,
-                                subject: "Rest Password!",
-                                html: FormateEmails.RestPasswordFormatEmail(`http://${DataShare.HostServer}:4200/rest/${TokenEncryption}`)
-                            })
-                                .then(result => {
-                                    //console.log(result);
-                                    if (result) {
-                                        return res.status(200).json({
-                                            Message: 'Done! Please Check Your Email To get Link Rest!',
-                                            Status: 'Rest Request!'
-                                        });
-                                    }
-                                }).catch(err => {
-                                    //console.log(err);
-                                    const error = new Error('this Is Error Event In Send Mail Please Call Developer Mena Afefe');
-                                    error.StatusCode = 501;
-                                    return next(error);
-                                })
-                        }
-                    })
-                    .catch(err => {
-                        const error = new Error('This error Number 6 Please send to Developer mena_afefe3000@yahoo.com');
-                        error.StatusCode = 404;
-                        return next(error);
-                    });
-            } else {
-                const error = new Error('This error Number 5 Please send to Developer mena_afefe3000@yahoo.com');
-                error.StatusCode = 404;
-                return next(error);
-            }
-        }).catch(err => {
-            console.log(err);
-            const error = new Error('occurred error! number 4 Please send to Developer mena_afefe3000@yahoo.com');
-            error.StatusCode = 400;
-            return next(error);
-        })
-    // setTimeout(() => {
-    //     res.end();
-    // }, 10000);    
-}
-exports.PostNewPassword = (req, res, next) => {
+exports.PostNewPassword = async (req, res, next) => {
     const username = req.body.username;
     const Token = req.params.Token;
     const Password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
-    User.findOne({ UserName: username })
-        .then(result => {
-            if (result) {
-
+    await jwt.verify(Token, username, (err, decoded) => {
+        if (!err) {
+            if (Date.now() < decoded.exp) {
+                User.findOne({ UserName: username })
+                    .then(result => {
+                        if (Date.now() > result.restTokenExpiration) {
+                            const error = new Error('PLease Use RestPassword To get Another URL Activation');
+                            error.StatusCode = 408;
+                            return next(error);
+                        }
+                        if (result && result.restToken === Token && Password === confirmPassword) {
+                            result.status = 'work';
+                            result.restToken = '';
+                            result.restTokenExpiration = null;
+                            result.password = bcrypt.hashSync(Password, 14);
+                            result.save().then(SaveDone => {
+                                if (SaveDone) {
+                                    return res.status(202).json({
+                                        Message: 'Done! Your Password changed and your account is working Try Login!',
+                                        Status: 'PasswordRest Successfull!'
+                                    })
+                                } else {
+                                    const error = new Error('occurred error! number 10 Please send to Developer mena_afefe3000@yahoo.com');
+                                    error.StatusCode = 409;
+                                    return next(error);
+                                }
+                            })
+                        } else {
+                            const error = new Error('This error Number 8 Please send to Developer mena_afefe3000@yahoo.com');
+                            error.StatusCode = 404;
+                            return next(error);
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        const error = new Error('occurred error! number 7 Please send to Developer mena_afefe3000@yahoo.com');
+                        error.StatusCode = 400;
+                        return next(error);
+                    })
             } else {
-                const error = new Error('This error Number 8 Please send to Developer mena_afefe3000@yahoo.com');
-                error.StatusCode = 404;
+                const error = new Error('PLease Use RestPassword To get Another URL To Reset Password');
+                error.StatusCode = 408;
                 return next(error);
             }
-        })
-        .catch(err => {
-            console.log(err);
-            const error = new Error('occurred error! number 7 Please send to Developer mena_afefe3000@yahoo.com');
-            error.StatusCode = 400;
+        } else {
+            const error = new Error('This error Number 9 Please send to Developer mena_afefe3000@yahoo.com');
+            error.StatusCode = 406;
             return next(error);
-        })
-    setTimeout(() => {
-        res.end();
-    }, 10000);
+        }
+    });
+    // setTimeout(() => {
+    //     res.end();
+    // }, 10000);
 }

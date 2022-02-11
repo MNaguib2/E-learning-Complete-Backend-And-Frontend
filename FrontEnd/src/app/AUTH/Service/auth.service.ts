@@ -2,17 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { CookieService } from 'ngx-cookie-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable, EMPTY, Subscription, Observer } from 'rxjs';
+import { BehaviorSubject, Observable, EMPTY, Subscription, Observer, Subject } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { take, tap } from 'rxjs/operators';
 import { HostServer } from '../../core/service/MainDataShare';
 
+//this maded modifie to can work in response from backend
 export interface User {
   name : string;
-  id : number;
-  username : string;
-  password : string;
+  id : any;
   type : string;
+  Gender: string;
+  DataBorn: Date;
+  email: string;
 }
 
 @Injectable({
@@ -22,6 +24,7 @@ export interface User {
 export class AuthService {
   public readonly API_URL = HostServer;
   public userData$ = new BehaviorSubject<any>('');
+  public UserRegistery = new Subject();
 
   constructor(
     private router : Router,
@@ -30,7 +33,7 @@ export class AuthService {
     private route : ActivatedRoute
     ) { }
 
-
+// this is finished use to replace by backend 
   public login(login: string, password: string): void {
     const httpParams = new HttpParams({
       fromObject: {
@@ -101,13 +104,20 @@ export class AuthService {
    return this.http.post(this.API_URL+'Admin/SigUp' , Data , { observe: 'response' });
   }
   getRestPass(email:string){
-    return this.http.get(this.API_URL +'Confirm/RestPassword/'+ email, {observe: 'response'});
+    return this.http.get(this.API_URL +'Admin/RestPassword/'+ email, {observe: 'response'});
   }
   getConfirmActivation(Token: string, id: string){
-    return this.http.get(`${this.API_URL}/Confirm/${Token}/${id}`, { observe: 'response' })
+    return this.http.get(`${this.API_URL}Confirm/${Token}/${id}`, { observe: 'response' })
   }
   postNewPassword(username: string, password: string, confirmpassword: string, url: string){
     //console.log(username, password, confirmpassword)
-    return this.http.post(this.API_URL+'Confirm/ActiveNewPassword/'+url, {username:username, password:password, confirmPassword:confirmpassword});
+    return this.http.post(this.API_URL+'Confirm/ActiveNewPassword/'+url, 
+    {username:username, password:password, confirmPassword:confirmpassword},{observe: 'response'});
+  }
+  PostSignIn(username: string){
+    return this.http.post(`${this.API_URL}Admin/SignIn`,{username: username},{observe: 'response'});
+  }
+  PostSendPassword(password: string, username : string){
+    return this.http.post(`${this.API_URL}Admin/Login` , {password: password, username : username} , {observe: 'response'});
   }
 }

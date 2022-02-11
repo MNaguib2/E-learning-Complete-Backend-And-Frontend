@@ -18,6 +18,10 @@ import { CourseRouting } from './courses/course-routing.module';
 import { DetialsComponent } from './courses/detials/detials.component';
 import { ErrorComponent } from './core/components/error/error.component';
 import { AuthModule } from './AUTH/Service/Auth.module';
+import { JwtModule } from '@auth0/angular-jwt';
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +43,13 @@ import { AuthModule } from './AUTH/Service/Auth.module';
     AppRoutingModule,
     MatProgressSpinnerModule,
     CourseRouting,
-    AuthModule
+    AuthModule,
+    JwtModule.forRoot({
+      config:{
+        tokenGetter: tokenGetter,
+        allowedDomains: ['192.168.1.2:3000']
+      }
+    })
   ],
   providers: [
     LoaderService,
