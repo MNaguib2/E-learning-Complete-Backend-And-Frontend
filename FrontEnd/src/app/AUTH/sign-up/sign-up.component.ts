@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { PlaceHolderDirective } from '../../core/service/place-holder.directive';
 import { ErrorComponent } from '../../core/components/error/error.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HostServer } from '../../core/service/MainDataShare';
+import { tap } from 'rxjs/operators';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -31,7 +33,7 @@ export class SignUpComponent implements OnInit {
     //console.log(this.Route.snapshot.url[0].path === 'confirm')
     this.Route.params.subscribe(data => {
       if (this.BasicUrl === 'confirm') {
-        this.service.getConfirmActivation(data.Token,data.Id).subscribe((ReciveData:any) => {
+        this.service.getConfirmActivation(data.Token, data.Id).subscribe((ReciveData: any) => {
           //console.log(ReciveData);
           this.Status = ReciveData.body.Status;
           this.message = ReciveData.body.Message;
@@ -78,9 +80,6 @@ export class SignUpComponent implements OnInit {
   }
   SubmitSignUp(SignUpForm: NgForm) {
     const formData = new FormData;
-    if (this.Image) {
-      formData.append('Image', this.Image, this.Image.name);
-    }
     formData.append('FirstName', SignUpForm.form.value.firstname);
     formData.append('LastName', SignUpForm.form.value.lastname);
     formData.append('email', SignUpForm.form.value.Email);
@@ -88,14 +87,31 @@ export class SignUpComponent implements OnInit {
     formData.append('confirmPassword', SignUpForm.form.value.confirmpassword);
     formData.append('Date', SignUpForm.form.value.date);
     formData.append('Gender', this.Gender);
-    this.service.PostSignUp(formData).subscribe((data: any) => {
-      //console.log(data);
-      this.Status = data.body.Status;
-      this.message = data.body.Message;
-    }, (error) => {
-      // console.log(error);
-      this.ShowErrorMesage(error);
-    });
+    let replay = false;
+    this.service.PostSignUp(formData).pipe(
+      tap((response: any) => {
+        console.log(response);
+        if (this.Image) {
+          console.log('error');
+          const ImageData = new FormData;
+          ImageData.append('ImageProfile', this.Image, this.Image.name);
+          ImageData.append('FileName', 'Test');
+          this.http.post(HostServer + `Admin/postImage/${response.body.Id}`, ImageData).subscribe(UploadImage => {
+            console.log('error');
+            console.log(UploadImage);
+          });
+        }
+      })
+    )
+      .subscribe((data: any) => {
+        //console.log(data);
+        this.Status = data.body.Status;
+        this.message = data.body.Message;
+        replay = true;
+      }, (error) => {
+        // console.log(error);
+        this.ShowErrorMesage(error);
+      });
 
     // formData.forEach((value,key) => {
     //   console.log(key+" "+value)

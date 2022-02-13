@@ -5,7 +5,6 @@ import { CoursesListComponent } from "./courses-list/courses-list.component";
 import { CreatCourseComponent } from "./creat-course/creat-course.component";
 import { DetialsComponent } from "./detials/detials.component";
 import { EditCourseComponent } from "./edit-course/edit-course.component";
-import { CoursesResolve } from "./services/courses-resolve.service";
 
 const routes :Routes = [
     { path: '', component: NewsComponent},

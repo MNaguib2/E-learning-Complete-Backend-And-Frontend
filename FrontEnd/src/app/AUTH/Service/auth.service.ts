@@ -7,6 +7,7 @@ import * as CryptoJS from 'crypto-js';
 import { take, tap } from 'rxjs/operators';
 import { HostServer } from '../../core/service/MainDataShare';
 
+
 //this maded modifie to can work in response from backend
 export interface User {
   name : string;
@@ -24,7 +25,7 @@ export interface User {
 export class AuthService {
   public readonly API_URL = HostServer;
   public userData$ = new BehaviorSubject<any>('');
-  public UserRegistery = new Subject();
+  public UserRegistery = new Subject<User>();
 
   constructor(
     private router : Router,
@@ -76,7 +77,7 @@ export class AuthService {
    })
     return Authenticated;
   }
-
+/*  this Code is comment to resone some problem when use new backend
   public AutoLogin(id: string) : Observable<User> {
     const Id = CryptoJS.AES.decrypt(id.slice(1, -1),
         'testUsePasswordToEncryptionCookieOrAnyThing').toString(CryptoJS.enc.Utf8);
@@ -99,6 +100,8 @@ export class AuthService {
     })
     )
   }
+///*/
+
   /*this is New Code to connect with internal API */
   PostSignUp(Data : FormData){
    return this.http.post(this.API_URL+'Admin/SigUp' , Data , { observe: 'response' });
@@ -119,5 +122,10 @@ export class AuthService {
   }
   PostSendPassword(password: string, username : string){
     return this.http.post(`${this.API_URL}Admin/Login` , {password: password, username : username} , {observe: 'response'});
+  }
+   LogIN(UserData : User, Token : string){
+    this.cookieService.set('User',Token, {expires :  new Date(new Date().getTime()+ 3600000)});
+    this.UserRegistery.next(UserData);
+    this.router.navigate(['/courses'])
   }
 }

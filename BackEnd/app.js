@@ -11,7 +11,7 @@ const app = express();
 
 app.use(bodyparse.json());
 
-app.use(multer().array());
+// app.use(multer().any());
 
 app.use('',express.static(path.join(__dirname, 'Data')));
 
