@@ -46,7 +46,7 @@ exports.PostSignUp = (req, res, next) => {
     const Gender = req.body.Gender;
     UserName = username(FirstName, LastName);
     const status = 'pinding';
-    const emailEncryption = jwt.sign({ email }, DataShare.passwordconfirm, { expiresIn: DataShare.ExpireInJsonWebToken }, { ignoreExpiration: true });
+    const emailEncryption = jwt.sign({ email }, DataShare.passwordconfirm, { expiresIn: DataShare.ExpireInJsonWebToken() }, { ignoreExpiration: true });
     //console.log(emailEncryption);
     // console.log(jwt.decode(emailEncryption , 'test'));
     user.findOne({ email: email })
@@ -138,10 +138,9 @@ exports.GetRestPassword = (req, res, next) => {
     const email = req.params.email;
     user.findOne({ email: email })
         .then(result => {
-            //console.log(result);
             if (result && (result.status === 'work' || result.status === 'pinding')) {
                 const Token = crypto.randomBytes(32).toString('hex');
-                const TokenEncryption = jwt.sign({ Token }, result.UserName, { expiresIn: DataShare.ExpireInJsonWebToken });
+                const TokenEncryption = jwt.sign({ Token }, result.UserName, { expiresIn: DataShare.ExpireInJsonWebToken() });
                 result.restTokenExpiration = Date.now() + (3600000 * 3);
                 result.restToken = TokenEncryption;
                 result.status = 'pinding';
@@ -155,7 +154,6 @@ exports.GetRestPassword = (req, res, next) => {
                                 html: FormateEmails.RestPasswordFormatEmail(`http://${DataShare.HostServer}:4200/rest/${TokenEncryption}`)
                             })
                                 .then(result => {
-                                    //console.log(result);
                                     if (result) {
                                         return res.status(200).json({
                                             Message: 'Done! Please Check Your Email To get Link Rest!',
@@ -223,7 +221,7 @@ exports.PostConfirmPassord = (req, res, next) => {
                     result.restTokenExpiration = null;
                     result.save()
                         .then(saveLog => {
-                            const Token = jwt.sign({ id: result._id.toString() }, DataShare.passwordconfirm, { expiresIn: DataShare.ExpireInJsonWebTokenForoneHoure });
+                            const Token = jwt.sign({ id: result._id.toString() }, DataShare.passwordconfirm, { expiresIn: DataShare.ExpireInJsonWebTokenForoneHoure() });
                             res.status(202).json({
                                 Message: `HellO ${result.Name}`,
                                 Token: Token,
@@ -287,7 +285,6 @@ exports.UploadImage = multer({
     })
 }).single('ImageProfile');//.any();
 exports.PostImage = (req, res, next) => {
-    //console.log(req.file);
     user.findById(req.params.id)
         .then(result => {
             if (result) {
@@ -310,7 +307,7 @@ exports.PostImage = (req, res, next) => {
 
 exports.AutoLogin = (req, res, next) => {
     const Token = req.params.Token;
-    const ID = jwt.verify(Token, DataShare.passwordconfirm, (error, decoded) => {
+ jwt.verify(Token, DataShare.passwordconfirm, (error, decoded) => {
         if (decoded.exp > Date.now() && !error) {
             user.findById(decoded.id)
                 .then(result => {
