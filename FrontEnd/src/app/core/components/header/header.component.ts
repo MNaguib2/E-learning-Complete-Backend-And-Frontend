@@ -21,11 +21,10 @@ export class HeaderComponent implements OnInit {
     private route : ActivatedRoute) { }
 
   ngOnInit(): void {    
-    this.Authservic.userData$.subscribe(data => {
-      this.LogInOut = data == "" ? false : true;
-      //console.log(data);
-      if(data !== ""){
-      this.userEmail = data[0].name;
+    this.Authservic.UserRegistery.subscribe(data => {
+      this.LogInOut = data ? true : false;
+      if(data){
+      this.userEmail = data.name;
       }
      });
   }

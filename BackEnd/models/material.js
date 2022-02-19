@@ -15,6 +15,11 @@ const MaterialSchema = new schema({
         required: true
     },
     Note: String,
+    Professor: {
+        type: schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 },
 {
     timestamps: true

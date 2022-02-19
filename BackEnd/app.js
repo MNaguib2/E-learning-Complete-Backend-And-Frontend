@@ -14,6 +14,7 @@ app.use(bodyparse.json());
 // app.use(multer().any());
 
 app.use('',express.static(path.join(__dirname, 'Data')));
+//app.use('Data',express.static(path.join(__dirname, 'Data')));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

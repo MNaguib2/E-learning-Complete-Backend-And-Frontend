@@ -8,5 +8,6 @@ router.get('/RestPassword/:email' , AuthCotroller.GetRestPassword);
 router.post('/SignIn' , AuthCotroller.postSigin);
 router.post('/Login' , AuthCotroller.PostConfirmPassord);
 router.post('/postImage/:id' ,AuthCotroller.UploadImage , AuthCotroller.PostImage)
+router.get('/AutoLogin/:Token' , AuthCotroller.AutoLogin)
 
 module.exports = router;

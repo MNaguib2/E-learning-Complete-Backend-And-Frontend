@@ -187,13 +187,21 @@ exports.GetRestPassword = (req, res, next) => {
             return next(error);
         })
 }
-var signature;
 exports.postSigin = (req, res, next) => {
     user.findOne({ UserName: req.body.username })
         .then(result => {
             if (result && result.status === "work") {
-                signature = crypto.randomBytes(16).toString('hex');
-                res.json({ signature });
+                const signature = crypto.randomBytes(16).toString('hex');
+                result.restToken = signature;
+                result.restTokenExpiration = Date.now() + 300000;
+                result.save()
+                    .then(result => {
+                        return res.json({ signature });
+                    }).catch(err => {
+                        const error = new Error('This error Number 16 Please send to Developer mena_afefe3000@yahoo.com');
+                        error.StatusCode = 404;
+                        return next(error);
+                    })
             } else {
                 const error = new Error('This error Number 12 Please send to Developer mena_afefe3000@yahoo.com');
                 error.StatusCode = 404;
@@ -206,17 +214,32 @@ exports.postSigin = (req, res, next) => {
         })
 }
 exports.PostConfirmPassord = (req, res, next) => {
-    const Password = CryptoJS.AES.decrypt(req.body.password, signature).toString(CryptoJS.enc.Utf8);
     user.findOne({ UserName: req.body.username })
         .then(result => {
-            if (result && bcrypt.compareSync(Password, result.password)) {
-                const Token = jwt.sign({ id: result._id.toString() }, DataShare.passwordconfirm, { expiresIn: DataShare.ExpireInJsonWebToken });
-                res.status(202).json({
-                    Message: `HellO ${result.Name}`,
-                    Token: Token,
-                    UserData:
-                        { name: result.Name, id: result._id, type: result.Type, Gender: result.Gender, DataBorn: result.DataBorn, email: result.email }
-                })
+            if (result && result.restTokenExpiration > Date.now()) {
+                const Password = CryptoJS.AES.decrypt(req.body.password, result.restToken).toString(CryptoJS.enc.Utf8);
+                if (bcrypt.compareSync(Password, result.password)) {
+                    result.restToken = '';
+                    result.restTokenExpiration = null;
+                    result.save()
+                        .then(saveLog => {
+                            const Token = jwt.sign({ id: result._id.toString() }, DataShare.passwordconfirm, { expiresIn: DataShare.ExpireInJsonWebTokenForoneHoure });
+                            res.status(202).json({
+                                Message: `HellO ${result.Name}`,
+                                Token: Token,
+                                UserData:
+                                    { name: result.Name, id: result._id, type: result.Type, Gender: result.Gender, DataBorn: result.DataBorn, email: result.email }
+                            })
+                        }).catch(err => {
+                            const error = new Error('occurred error! number 13 Please send to Developer mena_afefe3000@yahoo.com');
+                            error.StatusCode = 400;
+                            return next(error);
+                        })
+                } else {
+                    const error = new Error('occurred error! number 17 Please send to Developer mena_afefe3000@yahoo.com');
+                    error.StatusCode = 400;
+                    return next(error);
+                }
             } else {
                 const error = new Error('occurred error! number 14 Please send to Developer mena_afefe3000@yahoo.com');
                 error.StatusCode = 400;
@@ -237,30 +260,80 @@ exports.PostConfirmPassord = (req, res, next) => {
 // }
 
 
- exports.UploadImage = multer({
+exports.UploadImage = multer({
     fileFilter: ImageFilter, storage: multer.diskStorage({
-        destination: async(req, file, cb) => {
+        destination: (req, file, cb) => {
             user.findById(req.params.id)
-            .then(result => {
-                console.log(result);
-            })
-            const filePath = path.join(__dirname,'../Data',UserName);
-            if (!fs.existsSync(filePath)){
-                fs.mkdirSync(filePath);
-            }
-            console.log(req.body);
-            cb(null, `Data/${UserName}`)
+                .then(result => {
+                    if (result) {
+                        const filePath = path.join(__dirname, '../Data', result.UserName);
+                        if (!fs.existsSync(filePath)) {
+                            fs.mkdirSync(filePath);
+                        }
+                        cb(null, `Data/${result.UserName}`)
+                    } else {
+                        const error = new Error('occurred error! number 15 Please send to Developer mena_afefe3000@yahoo.com');
+                        error.StatusCode = 404;
+                        throw error
+                    }
+                }).catch(errr => {
+                    return next(errr);
+                })//"http://localhost:3000/" + req.file.path
         },
         filename: (req, file, cb) => {
-            console.log(file);
-            cb(null, file.originalname);
+            //console.log(file);
+            cb(null, new Date().toISOString().replace(/:/g, '') + '-' + file.originalname.replace(/ /g, ''));
         }
     })
-}).any();//single('ImageProfile');
+}).single('ImageProfile');//.any();
 exports.PostImage = (req, res, next) => {
-    console.log(req.body);
-    console.log('test from PostImage');
+    //console.log(req.file);
+    user.findById(req.params.id)
+        .then(result => {
+            if (result) {
+                result.ProfileUrl = `http://${DataShare.HostServer}:3000/` + `${result.UserName}/` + req.file.filename;
+                result.save();
+            } else {
+                const error = new Error('occurred error! number 15 Please send to Developer mena_afefe3000@yahoo.com');
+                error.StatusCode = 404;
+                throw error
+            }
+        }).catch(errr => {
+            return next(errr);
+        })
+    // console.log('test from PostImage');
     // setTimeout(() => {
-        res.end();
+    res.end();
     // }, 100000);
+}
+
+
+exports.AutoLogin = (req, res, next) => {
+    const Token = req.params.Token;
+    const ID = jwt.verify(Token, DataShare.passwordconfirm, (error, decoded) => {
+        if (decoded.exp > Date.now() && !error) {
+            user.findById(decoded.id)
+                .then(result => {
+                    if (result) {
+                        res.status(200).json({
+                            UserData:
+                                { name: result.Name, id: result._id, type: result.Type, Gender: result.Gender, DataBorn: result.DataBorn, email: result.email }
+                        })
+                    } else {
+                        const error = new Error('Your Fack Session Please Try Again Login');
+                        error.StatusCode = 403;
+                        throw error;
+                    }
+                }).catch(err => {
+                    return next(err);
+                })
+        } else {
+            const error = new Error('Your Session Is expire Please Return Login');
+            error.StatusCode = 504;
+            return next(error)
+        }
+    })
+    setTimeout(() => {
+        res.end();
+    }, 100000);
 }

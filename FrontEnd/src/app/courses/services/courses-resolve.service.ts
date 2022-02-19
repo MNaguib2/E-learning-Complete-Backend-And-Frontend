@@ -11,7 +11,8 @@ export class CoursesResolve implements Resolve<any> {
     constructor(private Authserver : AuthServic.AuthService, private cookieService:CookieService){}     
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) { 
         
-         return this.Authserver.AutoLogin(this.cookieService.get('User'));
+          //this comment to replace this by code connection with backend
+         //return this.Authserver.AutoLogin(this.cookieService.get('User')); 
          /*
         .then(async (result) => {
             if(result){
@@ -36,5 +37,6 @@ export class CoursesResolve implements Resolve<any> {
             console.log(err);
         });
         //*/
+        this.Authserver.AutoLoginWithBackEnd(this.cookieService.get('User'));
     }
 }

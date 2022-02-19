@@ -20,13 +20,15 @@ export class LoaderInterceptor implements HttpInterceptor {
     {
         return next.handle(req).pipe(
             tap(event => {
-                console.log(event.type)
+                //console.log(HttpEventType)
              if(event.type === HttpEventType.Sent){            
                 this.loaderService.show(); 
              }else if(event.type === HttpEventType.Response){
                 this.loaderService.hide(); 
              }
-            }), finalize(() => this.loaderService.hide()) // Ihave three way to LoadSpinner in this one and another in secShop another way and in E-learning Another way 
+            }, err => {
+                this.loaderService.hide();
+            })//, finalize(() => this.loaderService.hide()) // Ihave three way to LoadSpinner in this one and another in secShop another way and in E-learning Another way 
          ) 
     }
 }

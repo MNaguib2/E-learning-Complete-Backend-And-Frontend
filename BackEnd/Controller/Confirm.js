@@ -96,7 +96,7 @@ exports.PostNewPassword = async (req, res, next) => {
             if (Date.now() < decoded.exp) {
                 User.findOne({ UserName: username })
                     .then(result => {
-                        if (Date.now() > result.restTokenExpiration) {
+                        if (Date.now() > result.restTokenExpiration && result.status === 'pinding') {
                             const error = new Error('PLease Use RestPassword To get Another URL Activation');
                             error.StatusCode = 408;
                             return next(error);
