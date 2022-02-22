@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: '',  canActivate: [LoginGuard] , loadChildren: () => 
   import('./AUTH/Service/Auth-routing.module.ts').then(m => m.AuthRouting)},
   
-  {path: 'MainPage' , canActivate: [AuthGuard], resolve:[CoursesResolve],
+  {path: 'ProfileAcount' , canActivate: [AuthGuard], resolve:[CoursesResolve],
   /* remove comment from resolve to edite can work with backend */
   loadChildren: () => 
   import('./courses/course-routing.module').then(m => m.CourseRouting) },

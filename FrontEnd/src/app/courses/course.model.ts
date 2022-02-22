@@ -3,17 +3,17 @@ export interface Author {
     firstName: string;
     lastName: string;
 }
-//*
+
 interface CoursesListItem {
     id: number;
     title: string;
     date: string;
     duration: number;
     description: string;
-    authors: Array<number>;
+    authors: Array<Author>;
     isTopRated: boolean;
 }
-//*/
+
 export class Course implements CoursesListItem {
 
     constructor(
@@ -22,8 +22,7 @@ export class Course implements CoursesListItem {
         public date = '',
         public duration = 0,
         public description = '',
-        public imageUrl : any,
-        public authors: Array<number> = [],
+        public authors: Array<Author> = [],
         public isTopRated = false
     ) {}
 }

@@ -1,0 +1,46 @@
+<div class="row" style="width: 98vw;">
+  <div class="col-4 overflow-auto" style="height: 83vh;">
+
+    <div class="flex-shrink-0 p-3 text-center">
+      <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+          <button class="w-100 fw-bolder fs-3  btn btn-primary btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#Classes-collapse" aria-expanded="true">
+            Classes
+          </button>
+          <div class="collapse" id="Classes-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li><a href="#" class="fw-bolder fs-3 btn link-dark rounded">Overview</a></li>
+              <ng-container *ngFor="let class of classes">
+                <li><a href="#" class="fw-bolder fs-3 btn link-dark rounded">{{class}}</a></li>
+              </ng-container>
+              <ng-container *ngIf="Admin">
+              <li><a href="#" class="fw-bolder fs-3 btn link-dark rounded">Updates</a></li>
+              <li class="bi bi-plus-circle-fill"><button class="fw-bolder fs-3 btn ps-0 mb-2">New Class</button></li>
+            </ng-container>
+            </ul>
+          </div>
+        </li>
+        <li class="mb-1">
+          <button class="fw-bolder fs-3 w-100 btn btn-primary btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#Material-collapse" aria-expanded="false">
+            Material
+          </button>
+          <div class="collapse" id="Material-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 Large">
+              <li><a href="#" class="fw-bolder fs-3 btn link-dark rounded">Overview</a></li>
+              <ng-container *ngFor="let material of Materials">
+                <li><a href="#" class="fw-bolder fs-3 btn link-dark rounded">{{material}}</a></li>
+              </ng-container>
+              <ng-container *ngIf="Admin">
+                <li><a href="#" class="fw-bolder fs-3 btn link-dark rounded">Updates</a></li>
+                <li class="bi bi-plus-circle-fill"><button class="fw-bolder fs-3 btn ps-0 mb-2">New Material</button></li>
+              </ng-container>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-1">
+
+  </div>
+</div>

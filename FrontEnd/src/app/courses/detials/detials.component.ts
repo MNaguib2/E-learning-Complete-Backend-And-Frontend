@@ -19,7 +19,7 @@ Title;
     const id = this.router.snapshot.queryParams.id;
     this.getCourseById =  this.serveice.getCoursesByid(id).subscribe(data => {
       this.DataCourse = data;
-      this.ImageUrl = data[0].imageUrl;
+      //this.ImageUrl = data[0].imageUrl;
       this.Title = data[0].title;
       //console.log(data);
     })

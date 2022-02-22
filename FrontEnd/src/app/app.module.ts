@@ -6,32 +6,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import { FooterComponent } from './core/components/footer/footer.component';
-import { CoursesListComponent } from './courses/courses-list/courses-list.component';
-import { EditCourseComponent } from './courses/edit-course/edit-course.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoaderComponent } from './core/components/loader/loader.component';
 import { LoaderService } from './core/service/loader.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoaderInterceptor } from './core/service/loader.interceptor';
-import { CreatCourseComponent } from './courses/creat-course/creat-course.component'; 
-import { CourseRouting } from './courses/course-routing.module';
-import { DetialsComponent } from './courses/detials/detials.component';
 import { ErrorComponent } from './core/components/error/error.component';
 import { AuthModule } from './AUTH/Service/Auth.module';
-import { JwtModule } from '@auth0/angular-jwt';
-export function tokenGetter() {
-  return localStorage.getItem('access_token');
-}
+import { CoursesModule } from './courses/Courses.module';
+
+
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    CoursesListComponent,
-    EditCourseComponent,
     LoaderComponent,
-    CreatCourseComponent,
-    DetialsComponent,
     ErrorComponent,
   ],
   imports: [
@@ -42,14 +32,8 @@ export function tokenGetter() {
     ReactiveFormsModule,
     AppRoutingModule,
     MatProgressSpinnerModule,
-    CourseRouting,
     AuthModule,
-    JwtModule.forRoot({
-      config:{
-        tokenGetter: tokenGetter,
-        allowedDomains: ['192.168.1.2:3000']
-      }
-    })
+    CoursesModule
   ],
   providers: [
     LoaderService,

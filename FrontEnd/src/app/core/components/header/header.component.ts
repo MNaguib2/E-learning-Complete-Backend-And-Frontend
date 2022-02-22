@@ -34,8 +34,7 @@ export class HeaderComponent implements OnInit {
   }
 
   MyCourse(){
-    const id = this.cookieService.get('User').slice(1, -1);
-    this.router.navigate(['/courses' , id]);
+    this.router.navigate(['ProfileAcount/Classes'],{relativeTo: this.route});
   }
 
   SignUp(){
