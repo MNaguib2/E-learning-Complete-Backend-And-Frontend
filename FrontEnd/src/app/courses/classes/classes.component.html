@@ -6,23 +6,24 @@
     <i class="bi bi-arrow-right-circle-fill"></i>
     </button>
 
-    <div class="flex-shrink-0 p-3 nav text-center collapse navbar-collapse"  id="navbarText">
+    <div class="flex-shrink-0 p-3 text-center collapse navbar-collapse"  id="navbarText">
       <ul class="list-unstyled ps-0">
-        <li class="mb-1 w-100">
+        <li class="mb-1 w-100 nav">
           
             <button class="w-100 fw-bolder fs-3 btn btn-primary align-items-center" 
-            id="Home-tab"
+            id="Home-tab" (click)="Action($event)"
             data-bs-toggle="pill" data-bs-target="#Home" role="tab" aria-controls="Home">
               Home
-            </button>        
+            </button>
+
         </li>
         <li class="mb-1 w-100">
           <button class="w-100 fw-bolder fs-3  btn btn-primary btn-toggle align-items-center rounded collapsed" 
-          data-bs-toggle="collapse" data-bs-target="#Classes-collapse" aria-expanded="true">
+          data-bs-toggle="collapse" data-bs-target="#Classes-collapse">
             Classes
           </button>
           <div class="collapse" id="Classes-collapse">
-            <ul class="list-unstyled fw-normal pb-1">
+            <ul class="list-unstyled fw-normal pb-1 nav" (click)="Action($event)">
               <li class="w-100">
                 
                 <button class="fw-bolder fs-3 btn link-primary"
@@ -61,7 +62,7 @@
             Material
           </button>
           <div class="collapse" id="Material-collapse">
-            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 nav" (click)="Action($event)">
               <li class="w-100">
                 
                 <button class="fw-bolder fs-3 btn link-primary"
