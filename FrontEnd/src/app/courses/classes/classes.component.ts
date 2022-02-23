@@ -13,5 +13,4 @@ Materials=['Material1', 'Material2', 'Material3', 'Material4'];
 
   ngOnInit(): void {
   }
-
 }

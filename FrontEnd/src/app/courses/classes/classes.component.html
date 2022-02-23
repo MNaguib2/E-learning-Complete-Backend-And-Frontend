@@ -1,38 +1,97 @@
 <div class="row" style="width: 98vw;">
-  <div class="col-4 overflow-auto" style="height: 83vh;">
+  <div class="col-md-4 col-sm-4 overflow-auto navbar-expand-sm" style="max-height: 83vh; padding-bottom: 5px;">
 
-    <div class="flex-shrink-0 p-3 text-center">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+    data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="bi bi-arrow-right-circle-fill"></i>
+    </button>
+
+    <div class="flex-shrink-0 p-3 nav text-center collapse navbar-collapse"  id="navbarText">
       <ul class="list-unstyled ps-0">
-        <li class="mb-1">
-          <button class="w-100 fw-bolder fs-3  btn btn-primary btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#Classes-collapse" aria-expanded="true">
+        <li class="mb-1 w-100">
+          
+            <button class="w-100 fw-bolder fs-3 btn btn-primary align-items-center" 
+            id="Home-tab"
+            data-bs-toggle="pill" data-bs-target="#Home" role="tab" aria-controls="Home">
+              Home
+            </button>        
+        </li>
+        <li class="mb-1 w-100">
+          <button class="w-100 fw-bolder fs-3  btn btn-primary btn-toggle align-items-center rounded collapsed" 
+          data-bs-toggle="collapse" data-bs-target="#Classes-collapse" aria-expanded="true">
             Classes
           </button>
           <div class="collapse" id="Classes-collapse">
-            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
-              <li><a href="#" class="fw-bolder fs-3 btn link-dark rounded">Overview</a></li>
-              <ng-container *ngFor="let class of classes">
-                <li><a href="#" class="fw-bolder fs-3 btn link-dark rounded">{{class}}</a></li>
+            <ul class="list-unstyled fw-normal pb-1">
+              <li class="w-100">
+                
+                <button class="fw-bolder fs-3 btn link-primary"
+                id="Overview-tab" 
+                type="button" role="tab" data-bs-toggle="pill" data-bs-target="#Overview" 
+                aria-controls="Overview">Overview</button>
+
+              </li> 
+              
+                <ng-container *ngFor="let class of classes">
+                <li class="w-100">
+                  
+                  <button class="fw-bolder fs-3 btn link-primary"
+                  id="{{class}}-tab" 
+                type="button" role="tab" data-bs-toggle="pill"  [attr.data-bs-target]="'#' + class"
+                [attr.aria-controls]="class"
+                  >{{class}}</button>
+                
+                </li>
               </ng-container>
               <ng-container *ngIf="Admin">
-              <li><a href="#" class="fw-bolder fs-3 btn link-dark rounded">Updates</a></li>
-              <li class="bi bi-plus-circle-fill"><button class="fw-bolder fs-3 btn ps-0 mb-2">New Class</button></li>
+              <li class="w-100"><button class="fw-bolder fs-3 btn link-primary"
+                id="Updates-tab" 
+                type="button" role="tab" data-bs-toggle="pill"  data-bs-target="#Updates"
+                aria-controls="Updates">Updates</button></li>
+              <li class="bi bi-plus-circle-fill link-primary w-100"><button class="fw-bolder fs-3 btn ps-0 mb-2 link-primary"
+                id="Create-tab" 
+                type="button" role="tab" data-bs-toggle="pill"  data-bs-target="#Create"
+                aria-controls="Create">New Class</button></li>
             </ng-container>
             </ul>
           </div>
         </li>
-        <li class="mb-1">
+        <li class="mb-1 w-100">
           <button class="fw-bolder fs-3 w-100 btn btn-primary btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#Material-collapse" aria-expanded="false">
             Material
           </button>
           <div class="collapse" id="Material-collapse">
-            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 Large">
-              <li><a href="#" class="fw-bolder fs-3 btn link-dark rounded">Overview</a></li>
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+              <li class="w-100">
+                
+                <button class="fw-bolder fs-3 btn link-primary"
+                id="OverviewMaterial-tab" 
+                type="button" role="tab" data-bs-toggle="pill" data-bs-target="#OverviewMaterial" 
+                aria-controls="OverviewMaterial">Overview</button>
+
+              </li>
               <ng-container *ngFor="let material of Materials">
-                <li><a href="#" class="fw-bolder fs-3 btn link-dark rounded">{{material}}</a></li>
+                <li class="w-100">
+                  
+                  <button class="fw-bolder fs-3 btn link-primary"
+                  id="{{material}}-tab" 
+                type="button" role="tab" data-bs-toggle="pill"  [attr.data-bs-target]="'#' + material"
+                [attr.aria-controls]="material"
+                  >{{material}}</button>
+
+                </li>
               </ng-container>
               <ng-container *ngIf="Admin">
-                <li><a href="#" class="fw-bolder fs-3 btn link-dark rounded">Updates</a></li>
-                <li class="bi bi-plus-circle-fill"><button class="fw-bolder fs-3 btn ps-0 mb-2">New Material</button></li>
+                <li class="w-100">
+                  <button class="fw-bolder fs-3 btn link-primary"
+                id="UpdatesMaterial-tab" 
+                type="button" role="tab" data-bs-toggle="pill" data-bs-target="#UpdatesMaterial" 
+                aria-controls="UpdatesMaterial">Updates</button></li>
+                <li class="bi bi-plus-circle-fill link-primary w-100">
+                  <button class="fw-bolder fs-3 btn link-primary ps-0 mb-2"
+                  id="CreateMaterial-tab" 
+                  type="button" role="tab" data-bs-toggle="pill" data-bs-target="#CreateMaterial" 
+                  aria-controls="CreateMaterial">New Material</button></li>
               </ng-container>
             </ul>
           </div>
@@ -40,7 +99,31 @@
       </ul>
     </div>
   </div>
-  <div class="col-1">
+  <div class="col-md-8 col-sm-8">
+    <div class="tab-content" id="pills-tabContent">
 
+      <div class="tab-pane fade" id="Home" role="tabpanel" aria-labelledby="Home-tab">Home</div>
+
+      <div class="tab-pane fade" id="Overview" role="tabpanel" aria-labelledby="Overview-tab">Overview</div>
+      <ng-container *ngFor="let class of classes">
+        <div class="tab-pane fade" id="{{class}}" role="tabpanel" aria-labelledby="{{class}}-tab">{{class}}</div>
+      </ng-container>
+      <div class="tab-pane fade" id="Updates" role="tabpanel" aria-labelledby="Updates-tab">Updates</div>
+      <div class="tab-pane fade" id="Create" role="tabpanel" aria-labelledby="Create-tab">Create</div>
+
+
+<!--This is divid between Material and Classes Above Classes and below Material -->
+
+
+      <div class="tab-pane fade" id="OverviewMaterial" role="tabpanel" aria-labelledby="OverviewMaterial-tab">Overview Material</div>
+      <ng-container *ngFor="let material of Materials">
+        <div class="tab-pane fade" id="{{material}}" role="tabpanel" aria-labelledby="{{material}}-tab">{{material}}</div>
+      </ng-container>
+      <div class="tab-pane fade" id="UpdatesMaterial" role="tabpanel" aria-labelledby="UpdatesMaterial-tab">Updates aterial</div>
+      <div class="tab-pane fade" id="CreateMaterial" role="tabpanel" aria-labelledby="CreateMaterial-tab">Create Material</div>
+    </div>
   </div>
 </div>
+
+
+
