@@ -7,7 +7,6 @@ import { ForgetPasswordComponent } from "../forget-password/forget-password.comp
 import { LoginComponent } from "../login/login.component";
 import { SignUpComponent } from "../sign-up/sign-up.component";
 import { AuthRouting } from "./Auth-routing.module.ts";
-import { LoginGuard } from "./Login-Guard.service";
 
 @NgModule({
     declarations: [
@@ -16,11 +15,11 @@ import { LoginGuard } from "./Login-Guard.service";
         ForgetPasswordComponent,
         PlaceHolderDirective
     ],
-    // exports: [
-    //     // SignUpComponent,
-    //     // LoginComponent,
-    //     //PlaceHolderDirective
-    //   ],
+    exports: [
+        //SignUpComponent,
+        //LoginComponent,
+        PlaceHolderDirective // this only in export to I use Auth module in course module to inherent this directive in course module
+      ],
     imports: [
         CommonModule, //to Use Directive ngIf and ngFor etc..
         FormsModule, // it Use NgModule
@@ -29,7 +28,7 @@ import { LoginGuard } from "./Login-Guard.service";
     ],
     providers: [
         AuthGuard,
-        LoginGuard,
+        //LoginGuard, //this comment to this service content on injectale provider int
     ]
 })
 

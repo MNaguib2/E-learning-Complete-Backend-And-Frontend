@@ -4,11 +4,13 @@ import { Observable, Subscription } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { Course } from '../course.model';
 import { Author } from '../course.model';
+import { HostServer } from '../../core/service/MainDataShare';
+import { Classes } from './Classes.model';
 
 @Injectable({providedIn: 'root'})
 export class CourseService {
   public courses: Array<Course>;
-  //public readonly API_URL = 'http://localhost:3000';
+  public readonly API_URL = HostServer;
 
   constructor(private http: HttpClient) {
 
@@ -68,4 +70,7 @@ export class CourseService {
     return this.http.delete<Course>(`${this.API_URL}/courses/${courseId}`);
   }
   */
+  AddNewClass(Class : Classes){
+    return this.http.post(`${this.API_URL}Classes/newClass`, Class , { observe: 'response' });
+  }
 }

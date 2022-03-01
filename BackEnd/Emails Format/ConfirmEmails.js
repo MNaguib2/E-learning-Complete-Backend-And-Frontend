@@ -86,3 +86,40 @@ exports.ActivationFormatEmail = (UserName , id) => {
     </div>
   `
 }
+
+exports.AddedNewClass = (Name , NameClass) => {
+    return `
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="background-color: #E9E9E9; text-align: left;">
+    <div style="margin: 10px; text-align: center;">
+        <img src="http://localhost:3000/MainImage/Logo.png" width="150px" alt="">
+    </div>
+    <div
+        style="text-align: center; background-color: white; margin-right: 15%; width: 70%; height: auto; padding-bottom: 5px;">
+        <h1 style="background-color: #33D33E; padding-top: 3%; padding-bottom: 3%;">Success! Added New Class</h1>
+        <div style="padding-left: 5px; padding-right: 5px;">
+            <h2 style="text-align: left;">Hi ${Name}</h2>
+            <h3 style="text-align: left;">Congratulation You Add Class: - <em> ${NameClass} </em> any Student Can Subscibe in
+                this</h3>
+            <h3 style="text-align: left;">thank's for beging a great Admin. let it be!</h3>
+        </div>
+    </div>
+    <div style="text-align: center; color: #95958A;">
+        <p>Any Problem Can Connect with Me Via</p>
+        <p>Phone :- +201022448327</p>
+        <p>Email :- mena_afefe3000@yahoo.com</p>
+    </div>
+</body>
+
+</html>
+  `
+}

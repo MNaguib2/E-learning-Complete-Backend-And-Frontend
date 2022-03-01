@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { CookieService } from 'ngx-cookie-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable, EMPTY, Subscription, Observer, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
-import { take, tap } from 'rxjs/operators';
 import { HostServer } from '../../core/service/MainDataShare';
 
 
@@ -12,7 +11,7 @@ import { HostServer } from '../../core/service/MainDataShare';
 export interface User {
   name: string;
   id: any;
-  type: string;
+  type: number;
   Gender: string;
   DataBorn: Date;
   email: string;
@@ -25,7 +24,8 @@ export interface User {
 export class AuthService {
   public readonly API_URL = HostServer;
   public userData$ = new BehaviorSubject<any>('');
-  public UserRegistery = new Subject<User>();
+  //public UserRegistery = new Subject<User>();
+  public UserRegistery = new BehaviorSubject<User>(null);
 
   constructor(
     private router: Router,
@@ -133,7 +133,7 @@ export class AuthService {
   }
   LogIN(UserData: User, Token: string) {
     //console.log(Token);
-    this.cookieService.set('User', Token, { expires: new Date(new Date().getTime() + 3600000) });
+    this.cookieService.set('User', Token, { expires: new Date(new Date().getTime() + 3600000),path: '/' });
     this.UserRegistery.next(UserData);
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
@@ -141,10 +141,11 @@ export class AuthService {
     window.location.reload();
   }
   public AutoLoginWithBackEnd(Token: string) {
-    this.http.get(`${this.API_URL}Admin/AutoLogin/${Token}`).subscribe((data: any) => {
+     this.http.get(`${this.API_URL}Admin/AutoLogin/${Token}`).subscribe((data: any) => {
       this.UserRegistery.next(data.UserData);
     }, error => {
       alert(error.error.message);
+      this.logout();
     })
   }
 }

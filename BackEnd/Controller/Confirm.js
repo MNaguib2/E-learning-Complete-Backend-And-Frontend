@@ -93,6 +93,7 @@ exports.PostNewPassword = async (req, res, next) => {
     const confirmPassword = req.body.confirmPassword;
     await jwt.verify(Token, username, (err, decoded) => {
         if (!err) {
+            //console.log(new Date(decoded.exp));
             if (Date.now() < decoded.exp) {
                 User.findOne({ UserName: username })
                     .then(result => {

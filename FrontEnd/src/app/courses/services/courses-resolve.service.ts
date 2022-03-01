@@ -9,7 +9,7 @@ import * as CryptoJS from 'crypto-js';
 
 export class CoursesResolve implements Resolve<any> {
     constructor(private Authserver : AuthServic.AuthService, private cookieService:CookieService){}     
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) { 
+     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) { 
         
           //this comment to replace this by code connection with backend
          //return this.Authserver.AutoLogin(this.cookieService.get('User')); 
@@ -37,6 +37,6 @@ export class CoursesResolve implements Resolve<any> {
             console.log(err);
         });
         //*/
-        this.Authserver.AutoLoginWithBackEnd(this.cookieService.get('User'));
+        return this.Authserver.AutoLoginWithBackEnd(this.cookieService.get('User'));
     }
 }

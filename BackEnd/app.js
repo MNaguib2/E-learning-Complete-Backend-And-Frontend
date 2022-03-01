@@ -1,12 +1,14 @@
 const express = require('express');
+const cors = require('cors');
 const bodyparse = require('body-parser');
 const mongoose =  require('mongoose');
 const User = require ('./models/User');
 const url = 'mongodb://127.0.0.1:27017/E-Learning';
 const AuthRoute = require('./Route/Auth');
 const ConfirmRoute = require('./Route/Confirm');
+const ClassesRoute = require('./Route/Classes');
 const path = require('path');
-const multer =require('multer');
+const MiddleWare =require('./middleware/Auth');
 const app = express();
 
 app.use(bodyparse.json());
@@ -16,17 +18,11 @@ app.use(bodyparse.json());
 app.use('',express.static(path.join(__dirname, 'Data')));
 //app.use('Data',express.static(path.join(__dirname, 'Data')));
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Headers', '*');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
+app.use(cors());
 
 app.use('/Admin', AuthRoute);
-app.use('/Confirm', ConfirmRoute)
+app.use('/Confirm', ConfirmRoute);
+app.use('/Classes', MiddleWare.AuthAdmin , ClassesRoute);
 
 mongoose.connect(url)
 .then(result => {

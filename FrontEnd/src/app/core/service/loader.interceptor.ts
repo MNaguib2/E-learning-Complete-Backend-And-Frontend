@@ -3,11 +3,12 @@ import { HttpEvent, HttpEventType, HttpHandler, HttpInterceptor, HttpRequest } f
 import { Observable } from "rxjs";
 import { finalize, tap } from "rxjs/operators";
 import { LoaderService } from './loader.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 
 export class LoaderInterceptor implements HttpInterceptor {
-    constructor(public loaderService: LoaderService) { }
+    constructor(public loaderService: LoaderService, private cookie: CookieService) { }
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> 
     /*
     {
@@ -18,7 +19,12 @@ export class LoaderInterceptor implements HttpInterceptor {
     }
     // here will use another way to made interceptor */
     {
-        return next.handle(req).pipe(
+        const token = this.cookie.check('User') ? this.cookie.get('User') : ''
+        //console.log(token);
+     const modifeUrl = req.clone({
+         headers: req.headers.set('Token' , token)
+     })
+        return next.handle(modifeUrl).pipe(
             tap(event => {
                 //console.log(HttpEventType)
              if(event.type === HttpEventType.Sent){            

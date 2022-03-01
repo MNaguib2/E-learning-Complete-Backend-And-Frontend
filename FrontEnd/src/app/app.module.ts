@@ -14,6 +14,8 @@ import { LoaderInterceptor } from './core/service/loader.interceptor';
 import { ErrorComponent } from './core/components/error/error.component';
 import { AuthModule } from './AUTH/Service/Auth.module';
 import { CoursesModule } from './courses/Courses.module';
+import { StoreModule }  from '@ngrx/store';
+import { ClassReducer } from './courses/classes/store/class-list.reducer';
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { CoursesModule } from './courses/Courses.module';
     AppRoutingModule,
     MatProgressSpinnerModule,
     AuthModule,
-    CoursesModule
+    CoursesModule,
+    StoreModule.forRoot({ClassesList : ClassReducer})
   ],
   providers: [
     LoaderService,

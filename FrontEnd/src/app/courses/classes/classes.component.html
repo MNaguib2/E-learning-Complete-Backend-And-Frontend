@@ -1,24 +1,25 @@
-<div class="row" style="width: 98vw;">
+<ng-template appPlaceHolder></ng-template>
+<div class="row mt-1" style="width: 98vw;">
   <div class="col-md-4 col-sm-4 overflow-auto navbar-expand-sm" style="max-height: 83vh; padding-bottom: 5px;">
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
     data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
     <i class="bi bi-arrow-right-circle-fill"></i>
     </button>
-
-    <div class="flex-shrink-0 p-3 text-center collapse navbar-collapse"  id="navbarText">
+<!--align-items-center-->
+    <div class="flex-shrink-0 nav ps-3 text-center collapse navbar-collapse" id="navbarText" >
       <ul class="list-unstyled ps-0">
-        <li class="mb-1 w-100 nav">
+        <li class="mb-1">
           
-            <button class="w-100 fw-bolder fs-3 btn btn-primary align-items-center" 
+            <button class="fw-bolder fs-3 btn btn-primary" 
             id="Home-tab" (click)="Action($event)"
             data-bs-toggle="pill" data-bs-target="#Home" role="tab" aria-controls="Home">
               Home
             </button>
 
         </li>
-        <li class="mb-1 w-100">
-          <button class="w-100 fw-bolder fs-3  btn btn-primary btn-toggle align-items-center rounded collapsed" 
+        <li class="mb-1">
+          <button class="fw-bolder fs-3  btn btn-primary btn-toggle collapsed" 
           data-bs-toggle="collapse" data-bs-target="#Classes-collapse">
             Classes
           </button>
@@ -37,10 +38,10 @@
                 <li class="w-100">
                   
                   <button class="fw-bolder fs-3 btn link-primary"
-                  id="{{class}}-tab" 
-                type="button" role="tab" data-bs-toggle="pill"  [attr.data-bs-target]="'#' + class"
-                [attr.aria-controls]="class"
-                  >{{class}}</button>
+                  id="{{class.name}}-tab" 
+                type="button" role="tab" data-bs-toggle="pill"  [attr.data-bs-target]="'#' + class.name"
+                [attr.aria-controls]="class.name"
+                  >{{class.name}}</button>
                 
                 </li>
               </ng-container>
@@ -49,20 +50,23 @@
                 id="Updates-tab" 
                 type="button" role="tab" data-bs-toggle="pill"  data-bs-target="#Updates"
                 aria-controls="Updates">Updates</button></li>
-              <li class="bi bi-plus-circle-fill link-primary w-100"><button class="fw-bolder fs-3 btn ps-0 mb-2 link-primary"
+              <li class="w-100">
+                <button class="fw-bolder fs-3 btn ps-0 mb-2 link-primary"
                 id="Create-tab" 
                 type="button" role="tab" data-bs-toggle="pill"  data-bs-target="#Create"
-                aria-controls="Create">New Class</button></li>
+                aria-controls="Create"><i class="bi bi-plus-circle-fill"></i>New Class</button>
+              </li>
             </ng-container>
             </ul>
           </div>
         </li>
-        <li class="mb-1 w-100">
-          <button class="fw-bolder fs-3 w-100 btn btn-primary btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#Material-collapse" aria-expanded="false">
+        <li class="mb-1">
+          <button class="fw-bolder fs-3 btn btn-primary btn-toggle collapsed" data-bs-toggle="collapse" 
+          data-bs-target="#Material-collapse" aria-expanded="false">
             Material
           </button>
           <div class="collapse" id="Material-collapse">
-            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 nav" (click)="Action($event)">
+            <ul class="btn-toggle list-unstyled fw-normal pb-1 nav" (click)="Action($event)">
               <li class="w-100">
                 
                 <button class="fw-bolder fs-3 btn link-primary"
@@ -75,10 +79,10 @@
                 <li class="w-100">
                   
                   <button class="fw-bolder fs-3 btn link-primary"
-                  id="{{material}}-tab" 
-                type="button" role="tab" data-bs-toggle="pill"  [attr.data-bs-target]="'#' + material"
-                [attr.aria-controls]="material"
-                  >{{material}}</button>
+                  id="{{material.name}}-tab" 
+                type="button" role="tab" data-bs-toggle="pill"  [attr.data-bs-target]="'#' + material.name"
+                [attr.aria-controls]="material.name"
+                  >{{material.name}}</button>
 
                 </li>
               </ng-container>
@@ -88,11 +92,11 @@
                 id="UpdatesMaterial-tab" 
                 type="button" role="tab" data-bs-toggle="pill" data-bs-target="#UpdatesMaterial" 
                 aria-controls="UpdatesMaterial">Updates</button></li>
-                <li class="bi bi-plus-circle-fill link-primary w-100">
+                <li class="w-100">
                   <button class="fw-bolder fs-3 btn link-primary ps-0 mb-2"
                   id="CreateMaterial-tab" 
                   type="button" role="tab" data-bs-toggle="pill" data-bs-target="#CreateMaterial" 
-                  aria-controls="CreateMaterial">New Material</button></li>
+                  aria-controls="CreateMaterial"><i class="bi bi-plus-circle-fill"></i>New Material</button></li>
               </ng-container>
             </ul>
           </div>
@@ -107,21 +111,60 @@
 
       <div class="tab-pane fade" id="Overview" role="tabpanel" aria-labelledby="Overview-tab">Overview</div>
       <ng-container *ngFor="let class of classes">
-        <div class="tab-pane fade" id="{{class}}" role="tabpanel" aria-labelledby="{{class}}-tab">{{class}}</div>
+        <div class="tab-pane fade" id="{{class.name}}" role="tabpanel" aria-labelledby="{{class.name}}-tab">{{class.name}}</div>
       </ng-container>
+      <ng-container *ngIf="Admin">
       <div class="tab-pane fade" id="Updates" role="tabpanel" aria-labelledby="Updates-tab">Updates</div>
-      <div class="tab-pane fade" id="Create" role="tabpanel" aria-labelledby="Create-tab">Create</div>
+      <div class="tab-pane fade" id="Create" role="tabpanel" aria-labelledby="Create-tab">
+        <!--Create Form Class-->
 
+<form #createNewClasse="ngForm" (ngSubmit)="NewCourse(createNewClasse)">
+        <div class="row">
+          <label for="NameInput" class="col-sm-2 col-form-label col-form-label-lg">Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control form-control-lg" id="NameInput" 
+            placeholder="Please Entre Name Classs" name="name" ngModel required>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="DetialsInput" class="form-label col-form-label-lg">Detials</label>
+          <textarea class="form-control form-control-lg" id="DetialsInput" rows="3" 
+          placeholder="Add Any Details About this Class Such As number Hour number Lecture Professor lecturer What explain"
+          name="detials" ngModel required></textarea>
+        </div>
+        <h2 class="fst-italic">Please Select Material to add In this Class Or not now</h2>
+        <div class="row m-2" style="max-height: 15vh; overflow-y: auto;">          
+          <ng-container *ngFor="let material of Materials">
+            <div class="col-6 form-control-lg">
+              <input type="checkbox" name="{{material.name}}" id="{{material.name}}" ngModel>
+              <label class="ms-2" for="{{material.name}}">{{material.name}}</label>
+            </div>            
+          </ng-container>
+        </div>
+        <div class="mb-3">
+          <label for="Note" class="form-label col-form-label-lg">Note</label>
+          <textarea class="form-control form-control-lg" id="Note" rows="3" ngModel name="note"
+          placeholder="Add Any Note About this Class Such As Must Pass some material or age more than ..etc"></textarea>
+        </div>
+        <button class="btn btn-primary w-100 btn-lg" type="submit" 
+        [disabled]="createNewClasse.invalid">Add Class</button>
+      </form>
+
+        <!--Finish Code Form Create Class-->
+      </div>
+    </ng-container>
 
 <!--This is divid between Material and Classes Above Classes and below Material -->
 
 
       <div class="tab-pane fade" id="OverviewMaterial" role="tabpanel" aria-labelledby="OverviewMaterial-tab">Overview Material</div>
       <ng-container *ngFor="let material of Materials">
-        <div class="tab-pane fade" id="{{material}}" role="tabpanel" aria-labelledby="{{material}}-tab">{{material}}</div>
+        <div class="tab-pane fade" id="{{material.name}}" role="tabpanel" aria-labelledby="{{material.name}}-tab">{{material.name}}</div>
       </ng-container>
+      <ng-container *ngIf="Admin">
       <div class="tab-pane fade" id="UpdatesMaterial" role="tabpanel" aria-labelledby="UpdatesMaterial-tab">Updates aterial</div>
       <div class="tab-pane fade" id="CreateMaterial" role="tabpanel" aria-labelledby="CreateMaterial-tab">Create Material</div>
+    </ng-container>
     </div>
   </div>
 </div>

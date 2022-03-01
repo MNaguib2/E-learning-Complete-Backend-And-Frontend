@@ -1,0 +1,10 @@
+.navbar-expand-sm .navbar-collapse {
+    flex-direction: column;
+}
+.navbar-expand-sm .navbar-collapse :first-child{
+    width: 100%;
+}
+
+textarea.ng-invalid {
+    border-left: 5px solid #a94442;
+  }

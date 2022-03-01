@@ -19,9 +19,33 @@ const MaterialSchema = new schema({
         type: schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }
+    },
+    ClassId: {
+        type: schema.Types.ObjectId,
+        ref: 'Classe',
+        required: true
+    },
+    NumberHoure: Number,
+    Lectures: [
+        {
+            VideoURL: String,
+            detials: String,
+            Note: String,
+            Comment: {
+                id: {
+                    type: schema.Types.ObjectId,
+                    ref: 'User',
+                },
+                detials : {
+                    type: String,
+                    require: true
+                },
+                ImageURl : String
+            }
+        }
+    ]
 },
-{
-    timestamps: true
-})
+    {
+        timestamps: true
+    })
 module.exports = mongoose.model('Material', MaterialSchema);

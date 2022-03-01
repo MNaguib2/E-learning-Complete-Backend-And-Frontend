@@ -46,7 +46,8 @@ exports.PostSignUp = (req, res, next) => {
     const Gender = req.body.Gender;
     UserName = username(FirstName, LastName);
     const status = 'pinding';
-    const emailEncryption = jwt.sign({ email }, DataShare.passwordconfirm, { expiresIn: DataShare.ExpireInJsonWebToken() }, { ignoreExpiration: true });
+    const emailEncryption = jwt.sign({ email }, DataShare.passwordconfirm, 
+        { expiresIn: DataShare.ExpireInJsonWebTokenSignUpAndRestPassword() }, { ignoreExpiration: true });
     //console.log(emailEncryption);
     // console.log(jwt.decode(emailEncryption , 'test'));
     user.findOne({ email: email })
@@ -90,7 +91,7 @@ exports.PostSignUp = (req, res, next) => {
                                         Id: saveUser._id
                                     });
                                 }).catch(err => {
-                                    console.log(err);
+                                    //console.log(err);
                                     const error = new Error('this Is Error Event In Send Mail Please Call Developer Mena Afefe');
                                     error.StatusCode = 501;
                                     return next(error);
@@ -140,7 +141,8 @@ exports.GetRestPassword = (req, res, next) => {
         .then(result => {
             if (result && (result.status === 'work' || result.status === 'pinding')) {
                 const Token = crypto.randomBytes(32).toString('hex');
-                const TokenEncryption = jwt.sign({ Token }, result.UserName, { expiresIn: DataShare.ExpireInJsonWebToken() });
+                const TokenEncryption = jwt.sign({ Token }, result.UserName, 
+                    { expiresIn: DataShare.ExpireInJsonWebTokenSignUpAndRestPassword() });
                 result.restTokenExpiration = Date.now() + (3600000 * 3);
                 result.restToken = TokenEncryption;
                 result.status = 'pinding';
@@ -217,11 +219,14 @@ exports.PostConfirmPassord = (req, res, next) => {
             if (result && result.restTokenExpiration > Date.now()) {
                 const Password = CryptoJS.AES.decrypt(req.body.password, result.restToken).toString(CryptoJS.enc.Utf8);
                 if (bcrypt.compareSync(Password, result.password)) {
-                    result.restToken = '';
-                    result.restTokenExpiration = null;
+                    const TokenPassword = crypto.randomBytes(18).toString('hex');
+                    result.restToken = TokenPassword;
+                    result.restTokenExpiration = Date.now() + 3600000;
                     result.save()
                         .then(saveLog => {
-                            const Token = jwt.sign({ id: result._id.toString() }, DataShare.passwordconfirm, { expiresIn: DataShare.ExpireInJsonWebTokenForoneHoure() });
+                            const Token = jwt.sign({ id: result._id.toString(), TokenEncryption: TokenPassword }
+                            , DataShare.passwordconfirm, 
+                            { expiresIn: DataShare.ExpireInJsonWebTokenForLogIn() });
                             res.status(202).json({
                                 Message: `HellO ${result.Name}`,
                                 Token: Token,
@@ -308,10 +313,11 @@ exports.PostImage = (req, res, next) => {
 exports.AutoLogin = (req, res, next) => {
     const Token = req.params.Token;
  jwt.verify(Token, DataShare.passwordconfirm, (error, decoded) => {
-        if (decoded.exp > Date.now() && !error) {
+        if (!error && decoded.exp > Date.now()) {
             user.findById(decoded.id)
                 .then(result => {
                     if (result) {
+                        setTimeout
                         res.status(200).json({
                             UserData:
                                 { name: result.Name, id: result._id, type: result.Type, Gender: result.Gender, DataBorn: result.DataBorn, email: result.email }
