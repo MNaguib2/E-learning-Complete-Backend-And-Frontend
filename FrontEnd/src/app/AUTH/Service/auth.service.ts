@@ -5,7 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { HostServer } from '../../core/service/MainDataShare';
-
+import { Store } from '@ngrx/store';
+import { Classes } from 'src/app/courses/services/Classes.model';
+import * as ClassAction from '../../courses/classes/store/class-list.Actions';
 
 //this maded modifie to can work in response from backend
 export interface User {
@@ -31,7 +33,8 @@ export class AuthService {
     private router: Router,
     private http: HttpClient,
     private cookieService: CookieService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store : Store<{ClassesList : Array<Classes>}>
   ) { }
 
   // this is finished use to replace by backend 
@@ -142,7 +145,7 @@ export class AuthService {
   }
   public AutoLoginWithBackEnd(Token: string) {
      this.http.get(`${this.API_URL}Admin/AutoLogin/${Token}`).subscribe((data: any) => {
-      this.UserRegistery.next(data.UserData);
+       this.UserRegistery.next(data.UserData);       
     }, error => {
       alert(error.error.message);
       this.logout();

@@ -7,10 +7,10 @@ exports.AuthAdmin = (req, res, next) => {
     jwt.verify(token, DataShare.passwordconfirm, (error, decoded) => {
         if (!error && decoded) {
             User.findById(decoded.id)
-                .then(result => {
+                .then(result => {                    
                     if (result.restToken === decoded.TokenEncryption && Date.now() < result.restTokenExpiration) {
                         req.userId = decoded.id;
-                        req.user = result;
+                        req.user = result;                        
                         return next();
                     } else {
                         const error = new Error('Your Session Is UnAuthenticted Please Try Login Again');

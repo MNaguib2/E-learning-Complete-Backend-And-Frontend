@@ -3,6 +3,6 @@ export class Classes {
         public Name: string,
         public Detials: string,
         public Note: string,
-        public Material: Array<boolean>
+        public Material: Array<boolean>,
     ) { }
 }

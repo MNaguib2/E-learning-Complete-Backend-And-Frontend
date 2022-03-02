@@ -33,15 +33,15 @@
                 aria-controls="Overview">Overview</button>
 
               </li> 
-              
+
                 <ng-container *ngFor="let class of classes">
                 <li class="w-100">
                   
                   <button class="fw-bolder fs-3 btn link-primary"
-                  id="{{class.name}}-tab" 
-                type="button" role="tab" data-bs-toggle="pill"  [attr.data-bs-target]="'#' + class.name"
-                [attr.aria-controls]="class.name"
-                  >{{class.name}}</button>
+                  id="{{class._id}}-tab" 
+                type="button" role="tab" data-bs-toggle="pill"  [attr.data-bs-target]="'#C' + class._id"
+                [attr.aria-controls]="class._id"
+                  >{{class.Name}}</button>
                 
                 </li>
               </ng-container>
@@ -82,7 +82,8 @@
                   id="{{material.name}}-tab" 
                 type="button" role="tab" data-bs-toggle="pill"  [attr.data-bs-target]="'#' + material.name"
                 [attr.aria-controls]="material.name"
-                  >{{material.name}}</button>
+                  >{{material.name}}
+                </button>
 
                 </li>
               </ng-container>
@@ -110,12 +111,13 @@
       <div class="tab-pane fade" id="Home" role="tabpanel" aria-labelledby="Home-tab">Home</div>
 
       <div class="tab-pane fade" id="Overview" role="tabpanel" aria-labelledby="Overview-tab">Overview</div>
-      <ng-container *ngFor="let class of classes">
-        <div class="tab-pane fade" id="{{class.name}}" role="tabpanel" aria-labelledby="{{class.name}}-tab">{{class.name}}</div>
+      <ng-container *ngFor="let class of classes; index">
+        <div class="tab-pane fade" id="C{{class._id}}" role="tabpanel" aria-labelledby="{{class._id}}-tab">{{class.Name}}</div>
       </ng-container>
       <ng-container *ngIf="Admin">
       <div class="tab-pane fade" id="Updates" role="tabpanel" aria-labelledby="Updates-tab">Updates</div>
       <div class="tab-pane fade" id="Create" role="tabpanel" aria-labelledby="Create-tab">
+        
         <!--Create Form Class-->
 
 <form #createNewClasse="ngForm" (ngSubmit)="NewCourse(createNewClasse)">
@@ -158,9 +160,11 @@
 
 
       <div class="tab-pane fade" id="OverviewMaterial" role="tabpanel" aria-labelledby="OverviewMaterial-tab">Overview Material</div>
+      
       <ng-container *ngFor="let material of Materials">
         <div class="tab-pane fade" id="{{material.name}}" role="tabpanel" aria-labelledby="{{material.name}}-tab">{{material.name}}</div>
       </ng-container>
+
       <ng-container *ngIf="Admin">
       <div class="tab-pane fade" id="UpdatesMaterial" role="tabpanel" aria-labelledby="UpdatesMaterial-tab">Updates aterial</div>
       <div class="tab-pane fade" id="CreateMaterial" role="tabpanel" aria-labelledby="CreateMaterial-tab">Create Material</div>

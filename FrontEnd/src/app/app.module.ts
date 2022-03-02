@@ -15,8 +15,9 @@ import { ErrorComponent } from './core/components/error/error.component';
 import { AuthModule } from './AUTH/Service/Auth.module';
 import { CoursesModule } from './courses/Courses.module';
 import { StoreModule }  from '@ngrx/store';
-import { ClassReducer } from './courses/classes/store/class-list.reducer';
-
+import { ClassReducer, handleError } from './courses/classes/store/class-list.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { ClassEffect } from './courses/classes/store/Class-list.effect';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,9 @@ import { ClassReducer } from './courses/classes/store/class-list.reducer';
     MatProgressSpinnerModule,
     AuthModule,
     CoursesModule,
-    StoreModule.forRoot({ClassesList : ClassReducer})
+    StoreModule.forRoot({ClassesList : ClassReducer, ErrorMessage : handleError}),
+    EffectsModule.forRoot([ClassEffect])
+
   ],
   providers: [
     LoaderService,

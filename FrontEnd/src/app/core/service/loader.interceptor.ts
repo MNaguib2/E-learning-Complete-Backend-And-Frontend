@@ -20,10 +20,11 @@ export class LoaderInterceptor implements HttpInterceptor {
     // here will use another way to made interceptor */
     {
         const token = this.cookie.check('User') ? this.cookie.get('User') : ''
-        //console.log(token);
+        
      const modifeUrl = req.clone({
          headers: req.headers.set('Token' , token)
      })
+     //console.log(modifeUrl);
         return next.handle(modifeUrl).pipe(
             tap(event => {
                 //console.log(HttpEventType)

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Classes } from 'src/app/courses/services/Classes.model';
+import * as ClassAction from '../../../courses/classes/store/class-list.Actions';
 
 @Component({
   selector: 'app-news',
@@ -7,7 +10,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private store : Store<{ClassesList : Array<Classes>}>
+  ) { }
 
   ngOnInit(): void {
   }

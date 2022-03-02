@@ -1,7 +1,6 @@
 const express = require('express');
 const Router = express.Router();
 const ClassesController = require('../Controller/Classes');
-const MiddleWare =require('../middleware/Auth');
 const { body } = require('express-validator');
 
 Router.post('/newClass', [body('Name', 'Please Entre valid Name').trim().isLength({min: 4}).isString(),
@@ -9,5 +8,7 @@ body('Detials').trim().isLength({min: 10}).withMessage('Please Entre More Detial
 .withMessage('Please Entre Valid Detials')
 ]
 , ClassesController.NewClasses);
+
+Router.get('/GetAllClasses' , ClassesController.GetAllClass)
 
 module.exports = Router;
