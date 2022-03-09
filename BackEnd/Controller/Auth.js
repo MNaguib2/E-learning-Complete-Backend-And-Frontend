@@ -188,6 +188,7 @@ exports.GetRestPassword = (req, res, next) => {
         })
 }
 exports.postSigin = (req, res, next) => {
+    //console.log('test Password');
     user.findOne({ UserName: req.body.username })
         .then(result => {
             if (result && result.status === "work") {
@@ -216,7 +217,8 @@ exports.postSigin = (req, res, next) => {
 exports.PostConfirmPassord = (req, res, next) => {
     user.findOne({ UserName: req.body.username })
         .then(result => {
-            if (result && result.restTokenExpiration > Date.now()) {
+            //console.log('test Password');
+            if (result && result.restTokenExpiration > Date.now()) {                
                 const Password = CryptoJS.AES.decrypt(req.body.password, result.restToken).toString(CryptoJS.enc.Utf8);
                 if (bcrypt.compareSync(Password, result.password)) {
                     const TokenPassword = crypto.randomBytes(18).toString('hex');
@@ -336,7 +338,7 @@ exports.AutoLogin = (req, res, next) => {
             return next(error)
         }
     })
-    setTimeout(() => {
-        res.end();
-    }, 100000);
+    // setTimeout(() => {
+    //     res.end();
+    // }, 100000);
 }

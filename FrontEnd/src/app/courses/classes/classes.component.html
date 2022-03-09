@@ -13,14 +13,15 @@
           
             <button class="fw-bolder fs-3 btn btn-primary" 
             id="Home-tab" (click)="Action($event)"
-            data-bs-toggle="pill" data-bs-target="#Home" role="tab" aria-controls="Home">
+            data-bs-toggle="pill" data-bs-target="#Home" role="tab" aria-selected ="true"
+             aria-controls="Home">
               Home
             </button>
 
         </li>
         <li class="mb-1">
           <button class="fw-bolder fs-3  btn btn-primary btn-toggle collapsed" 
-          data-bs-toggle="collapse" data-bs-target="#Classes-collapse">
+          data-bs-toggle="collapse" data-bs-target="#Classes-collapse" (click)="LoadClasses()">
             Classes
           </button>
           <div class="collapse" id="Classes-collapse">
@@ -62,7 +63,7 @@
         </li>
         <li class="mb-1">
           <button class="fw-bolder fs-3 btn btn-primary btn-toggle collapsed" data-bs-toggle="collapse" 
-          data-bs-target="#Material-collapse" aria-expanded="false">
+          data-bs-target="#Material-collapse" aria-expanded="false" (click)="LoadMaterial()">
             Material
           </button>
           <div class="collapse" id="Material-collapse">
@@ -108,7 +109,7 @@
   <div class="col-md-8 col-sm-8">
     <div class="tab-content" id="pills-tabContent">
 
-      <div class="tab-pane fade" id="Home" role="tabpanel" aria-labelledby="Home-tab">Home</div>
+      <div class="tab-pane fade active show" id="Home" role="tabpanel" aria-labelledby="Home-tab">Home</div>
 
       <div class="tab-pane fade" id="Overview" role="tabpanel" aria-labelledby="Overview-tab">Overview</div>
       <ng-container *ngFor="let class of classes; index">

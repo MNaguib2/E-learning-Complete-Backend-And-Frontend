@@ -30,18 +30,7 @@ const MaterialSchema = new schema({
         {
             VideoURL: String,
             detials: String,
-            Note: String,
-            Comment: {
-                id: {
-                    type: schema.Types.ObjectId,
-                    ref: 'User',
-                },
-                detials : {
-                    type: String,
-                    require: true
-                },
-                ImageURl : String
-            }
+            Note: String
         }
     ]
 },

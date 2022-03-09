@@ -1,13 +1,14 @@
-import { AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, 
+  Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ErrorComponent } from 'src/app/core/components/error/error.component';
 import { PlaceHolderDirective } from 'src/app/core/service/place-holder.directive';
 import { AuthService } from '../../AUTH/Service/auth.service';
-import { Classes } from '../services/Classes.model';
+import { Classes, Proffersor } from '../services/Classes.model';
 import { CourseService } from '../services/course.service';
 import { Store } from '@ngrx/store';
 import * as ClassAction from './store/class-list.Actions';
-import { Subscription } from 'rxjs';
+import { observable, Subscription } from 'rxjs';
 import { Error } from './store/class-list.reducer';
 
 @Component({
@@ -28,26 +29,19 @@ Materials=[{name: 'Material1'}, {name: 'Material2'}, {name: 'Material3'}, {name:
   constructor(
     private Authservice : AuthService, private ClassService : CourseService,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private store : Store<{ClassesList : Array<Classes>, ErrorMessage: Error}>,
+    private store : Store<{ClassesList : Array<Classes>, ErrorMessage: Error, Professor : Array<Proffersor>}>,
     private cdref: ChangeDetectorRef
     ) { }
-    NewClase: Classes;
+    NewClase;
     subscribe : Subscription;
-  ngOnInit(): void {   
-    this.Authservice.UserRegistery.subscribe((data : any) => {
+  ngOnInit(): void {
+       this.Authservice.UserRegistery.subscribe((data : any) => {
       if(data){
         this.Admin =  data.type == 1 ? true: false;
       }      
     });
   }
-  ngAfterViewInit() {
-    this.store.dispatch(new ClassAction.RequestGetClasses());
-    // this.subscribe = this.store.select('ClassesList').subscribe((data : Classes[]) => {
-    //   if(data[0] != undefined){
-    //     this.classes = data;
-    //     //console.log(data)
-    //   }      
-    // })
+  ngAfterViewInit() {  
     this.subscribe = this.store.select('ErrorMessage').subscribe((data : any) => {
       //console.log(data)
       if(data.error){
@@ -77,13 +71,14 @@ Materials=[{name: 'Material1'}, {name: 'Material2'}, {name: 'Material3'}, {name:
       Form.form.value[key] === true ? Material.push(key) : null ;
   }
     this.NewClase = {Name : Form.form.value.name, Detials : Form.form.value.detials, Note: Form.form.value.note, Material: Material};
-    // this.ClassService.AddNewClass(this.NewClase).subscribe((result : any) => {
+    // this.ClassService.AddNewClass(this.NewClase).subscribe((result : any) => { // this comment to work in NGRX
     //   console.log(result);
     // }, error => {
     //   //console.log(error);
     //   this.ShowErrorMesage(error);
     // })
-  this.store.dispatch(new ClassAction.AddNewClass(this.NewClase));
+  this.store.dispatch(new ClassAction.RequestAddNewClass(this.NewClase));
+  this.createNewClasse.resetForm();
   }
 
   ShowErrorMesage(error) {
@@ -100,5 +95,30 @@ Materials=[{name: 'Material1'}, {name: 'Material2'}, {name: 'Material3'}, {name:
   ngOnDestroy(): void {
     this.subscribe.unsubscribe();
     this.store.dispatch(ClassAction.DestoryError());
+  }
+  ClickedClasses : boolean = true;
+  ClickedMaterial : boolean = true;
+  
+  LoadClasses(){
+    if(this.ClickedClasses){
+      this.store.dispatch(new ClassAction.RequestGetClasses());
+      this.ClickedClasses = false;
+    }    
+    this.subscribe = this.store.select('ClassesList').subscribe((data : Classes[]) => {
+      console.log(data)
+      if(data !== undefined){
+        this.classes = data;
+        //console.log(data)
+      }      
+    }) 
+  }
+  LoadMaterial(){
+    if(this.ClickedMaterial){
+      this.store.dispatch({type : ClassAction.Request_GetAll_Proffessor});
+      this.ClickedMaterial = false;
+    }    
+    this.store.select('Professor').subscribe(data => {
+      console.log(data);
+    })
   }
 }

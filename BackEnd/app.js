@@ -19,6 +19,15 @@ app.use('',express.static(path.join(__dirname, 'Data')));
 //app.use('Data',express.static(path.join(__dirname, 'Data')));
 
 app.use(cors());
+// app.options('*',cors());
+
+
+//   app.use((req,res,next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type');
+//     next();  
+//   });
 
 app.use('/Admin', AuthRoute);
 app.use('/Confirm', ConfirmRoute);

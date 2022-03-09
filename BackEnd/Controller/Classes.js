@@ -1,4 +1,5 @@
 const Classes = require('../models/Classes');
+const user = require('../models/User');
 const { validationResult } = require('express-validator');
 const nodemail = require('nodemailer');
 const FormateEmails = require('../Emails Format/ConfirmEmails');
@@ -25,7 +26,7 @@ exports.NewClasses = (req, res, next) => {
                 Note: req.body.Class.Note,
                 Materials: req.body.Class.Material,
             }).save().then(resultSucessful => {
-                //console.log('req.body.Detials');
+                //console.log(resultSucessful);
                 if (resultSucessful) {
                     transport.sendMail({
                         from: "teste.learningnodejs@gmail.com",
@@ -34,7 +35,9 @@ exports.NewClasses = (req, res, next) => {
                         html: FormateEmails.AddedNewClass(req.user.Name, req.body.Class.Name)
                     }).then(emailSended => {
                         res.status(200).json({
-                            message : 'Your Class Is Add Sucessful!!'
+                            message : 'Your Class Is Add Sucessful!!',
+                            NewClass : {Detials : resultSucessful.Detials , Material : resultSucessful.Materials,
+                                Name : resultSucessful.Name, Note: resultSucessful.Note , _id: resultSucessful._id}
                         })
                     })
                         .catch(err => {
@@ -51,7 +54,7 @@ exports.NewClasses = (req, res, next) => {
             }).catch(err => {
                 const error = new Error('occurred error! number 20 Please send to Developer mena_afefe3000@yahoo.com');
                 error.StatusCode = 401;
-                //throw error //this is wrong to can't add throw in catch
+                //throw error //this is wrong to can't add throw in catch already TRy this
                 return next(error);
             });
         } else {
@@ -73,20 +76,40 @@ exports.GetAllClass = (req, res, next) => {
         if(req.user.Type == 1){
             Classes.find()
             .then(result => {
-                //console.log('test connection');
-                // res.status(200).json({
-                //     result
-                // })
-                const error = new Error('occurred error! number 21 please send to Developer mena_afefe3000@yahoo.com');
-                error.StatusCode = 400;
-                throw error;
+                res.status(200).json({
+                    result
+                })
+                // const error = new Error('occurred error! number 21 please send to Developer mena_afefe3000@yahoo.com');
+                // error.StatusCode = 400;
+                // throw error;
             }).catch(err =>{
                 const error = new Error('occurred error! number 21 please send to Developer mena_afefe3000@yahoo.com');
                 error.StatusCode = 400;
                 return next(error);
             })
-        }
-     setTimeout(() => {
+        }     
+}
+
+exports.GetAllProffessor = (req, res, next) => {
+    let UserProffessor = [];
+    if(req.user.Type == 1){
+        user.find({Type: 2}).then(resUser => {
+            if(resUser.length > 0){
+                resUser.forEach(value => {
+                    UserProffessor.push({Name : value.Name , DataBorn : value.DataBorn, 
+                        UserName : value.UserName , email : value.email, _id : value._id , detials : value.detials})
+                })
+                return res.status(200).json(UserProffessor);
+            }else{
+                const error = new Error('occurred error! Please Add Professor From Setting');
+                error.StatusCode = 404;
+               throw error;
+            }                  
+        }).catch(err => {
+            return next(err);
+        })        
+    }
+    setTimeout(() => {
         res.end();
      }, 5000);
 }
