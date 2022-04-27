@@ -15,7 +15,7 @@ import { ErrorComponent } from './core/components/error/error.component';
 import { AuthModule } from './AUTH/Service/Auth.module';
 import { CoursesModule } from './courses/Courses.module';
 import { StoreModule }  from '@ngrx/store';
-import { ClassReducer, handleError, Professor } from './courses/classes/store/class-list.reducer';
+import { ClassReducer, DataMaterial, handleError, Professor } from './courses/classes/store/class-list.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ClassEffect } from './courses/classes/store/Class-list.effect';
 
@@ -37,7 +37,7 @@ import { ClassEffect } from './courses/classes/store/Class-list.effect';
     MatProgressSpinnerModule,
     AuthModule,
     CoursesModule,
-    StoreModule.forRoot({ClassesList : ClassReducer, ErrorMessage : handleError, Professor : Professor}),
+    StoreModule.forRoot({ClassesList : ClassReducer, ErrorMessage : handleError, Professor : Professor, Material : DataMaterial}),
     EffectsModule.forRoot([ClassEffect])
 
   ],

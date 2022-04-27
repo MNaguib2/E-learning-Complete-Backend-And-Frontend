@@ -113,3 +113,19 @@ exports.GetAllProffessor = (req, res, next) => {
         res.end();
      }, 5000);
 }
+
+exports.GETAllMaterial = (req, res , next) => {
+    console.log('test Freom Get All MAterial');
+
+    setTimeout(() => {
+        res.end();
+     }, 5000);
+}
+
+exports.AddMaterial = (req, res , next) => {
+    console.log('test Freom Get All MAterial');
+    
+    setTimeout(() => {
+        res.end();
+     }, 5000);
+}

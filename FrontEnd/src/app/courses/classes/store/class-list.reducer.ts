@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { Classes, Proffersor } from '../../services/Classes.model';
+import { Classes, Material, Proffersor } from '../../services/Classes.model';
 import * as ClassesAction from './class-list.Actions';
 
 export const initialState: Array<Classes> = [{
@@ -53,5 +53,23 @@ export const handleError = createReducer(
 
   export const Professor = createReducer(
     InitialStaueProffessor,
-    on(ClassesAction.GetAllProffessor, (statue, action) => (action.Proffessor))
+    on(ClassesAction.GetAllProffessor, (statue, action) => {return action.Proffessor}),
+  );
+
+  export const InitialStaueMaterial : Array<Material> = [{
+    Name : '' ,
+    _id: '',
+    Detials : '',
+    Note : '' ,
+    Properites: '',
+    Professor : '',
+    Class : '',
+    Lectures: [],
+    NumberHoure: 0
+
+}]
+
+export const DataMaterial = createReducer(
+    InitialStaueMaterial,
+    on(ClassesAction.GetAllMaterial, (statue, action) => ({...statue , ...action.Materials})),
   );

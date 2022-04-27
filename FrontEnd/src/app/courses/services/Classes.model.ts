@@ -15,9 +15,9 @@ export class Material {
         public Detials: string,
         public Properites: string,
         public Note: string,
-        public Professor: Proffersor,
+        public Professor: Proffersor["_id"],
         public _id: string,
-        public Class: Classes,
+        public Class: Classes["_id"],
         public NumberHoure: number,
         public Lectures: Array<{
             VideoURL: String,

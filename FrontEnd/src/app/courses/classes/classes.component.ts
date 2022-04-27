@@ -1,14 +1,15 @@
 import {AfterViewInit, ChangeDetectorRef, 
   Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ErrorComponent } from 'src/app/core/components/error/error.component';
 import { PlaceHolderDirective } from 'src/app/core/service/place-holder.directive';
 import { AuthService } from '../../AUTH/Service/auth.service';
-import { Classes, Proffersor } from '../services/Classes.model';
+import { Classes, Material, Proffersor } from '../services/Classes.model';
 import { CourseService } from '../services/course.service';
 import { Store } from '@ngrx/store';
 import * as ClassAction from './store/class-list.Actions';
-import { observable, Subscription } from 'rxjs';
+import { Observable, observable, Subscription } from 'rxjs';
 import { Error } from './store/class-list.reducer';
 
 @Component({
@@ -26,12 +27,17 @@ Materials=[{name: 'Material1'}, {name: 'Material2'}, {name: 'Material3'}, {name:
 @ViewChild('createNewClasse') createNewClasse : NgForm;
 @ViewChild(PlaceHolderDirective , {static : false}) alertHost!: PlaceHolderDirective;
 
+CreateMaterial: FormGroup;
+
   constructor(
     private Authservice : AuthService, private ClassService : CourseService,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private store : Store<{ClassesList : Array<Classes>, ErrorMessage: Error, Professor : Array<Proffersor>}>,
-    private cdref: ChangeDetectorRef
-    ) { }
+    private store : Store<{ClassesList : Array<Classes>, 
+      ErrorMessage: Error, 
+      Professor : Array<Proffersor>, Material: Array<Material>}>,
+    ) {
+      this.CreateMaterial = new FormGroup({});
+     }
     NewClase;
     subscribe : Subscription;
   ngOnInit(): void {
@@ -40,12 +46,22 @@ Materials=[{name: 'Material1'}, {name: 'Material2'}, {name: 'Material3'}, {name:
         this.Admin =  data.type == 1 ? true: false;
       }      
     });
+    this.subscribe = this.store.select('ClassesList').subscribe((data : Classes[]) => {
+      if(data !== undefined){
+        this.classes = data;
+      }      
+    }) 
+
   }
-  ngAfterViewInit() {  
+  ngAfterViewInit() {
+    this.subscribe = this.store.select('Professor').subscribe(data => {
+      console.log(data);
+    }) ;
+    this.subscribe = this.store.select('Material').subscribe(data => {
+      console.log(data);
+    })  
     this.subscribe = this.store.select('ErrorMessage').subscribe((data : any) => {
-      //console.log(data)
       if(data.error){
-        //console.log(data)
         this.ShowErrorMesage(data); 
       }
     })
@@ -103,22 +119,16 @@ Materials=[{name: 'Material1'}, {name: 'Material2'}, {name: 'Material3'}, {name:
     if(this.ClickedClasses){
       this.store.dispatch(new ClassAction.RequestGetClasses());
       this.ClickedClasses = false;
-    }    
-    this.subscribe = this.store.select('ClassesList').subscribe((data : Classes[]) => {
-      console.log(data)
-      if(data !== undefined){
-        this.classes = data;
-        //console.log(data)
-      }      
-    }) 
+    }
   }
   LoadMaterial(){
     if(this.ClickedMaterial){
       this.store.dispatch({type : ClassAction.Request_GetAll_Proffessor});
+      this.store.dispatch({type : ClassAction.Request_GetAll_Material});
       this.ClickedMaterial = false;
-    }    
-    this.store.select('Professor').subscribe(data => {
-      console.log(data);
-    })
+    }   
+  }
+  CreateNewMaterial(){
+
   }
 }

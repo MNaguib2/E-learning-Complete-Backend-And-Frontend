@@ -61,7 +61,7 @@ export const RequestGetAllMaterial = createAction(
 
 export const GetAllMaterial = createAction(
     GetAll_Material,
-    props<{Proffessor : Array<Material>}>()
+    props<{Materials : Array<Material>}>()
 );
 
 export type ClassesAction = RequestGetClasses | GetClasses | AddNewClass | RequestAddNewClass ;

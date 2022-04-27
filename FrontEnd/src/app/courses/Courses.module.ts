@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuthModule } from "../AUTH/Service/Auth.module";
 import { ClassesComponent } from "./classes/classes.component";
 import { CourseRouting } from "./course-routing.module";
@@ -19,6 +19,7 @@ import { EditCourseComponent } from "./edit-course/edit-course.component";
         CommonModule,
         FormsModule,
         CourseRouting,
+        ReactiveFormsModule,
         AuthModule
     ],
     providers: [

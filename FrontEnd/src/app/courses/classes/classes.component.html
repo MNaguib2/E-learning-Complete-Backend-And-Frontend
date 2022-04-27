@@ -2,103 +2,92 @@
 <div class="row mt-1" style="width: 98vw;">
   <div class="col-md-4 col-sm-4 overflow-auto navbar-expand-sm" style="max-height: 83vh; padding-bottom: 5px;">
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-    data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-    <i class="bi bi-arrow-right-circle-fill"></i>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-arrow-right-circle-fill"></i>
     </button>
-<!--align-items-center-->
-    <div class="flex-shrink-0 nav ps-3 text-center collapse navbar-collapse" id="navbarText" >
+    <!--align-items-center-->
+    <div class="flex-shrink-0 nav ps-3 text-center collapse navbar-collapse" id="navbarText">
       <ul class="list-unstyled ps-0">
         <li class="mb-1">
-          
-            <button class="fw-bolder fs-3 btn btn-primary" 
-            id="Home-tab" (click)="Action($event)"
-            data-bs-toggle="pill" data-bs-target="#Home" role="tab" aria-selected ="true"
-             aria-controls="Home">
-              Home
-            </button>
+
+          <button class="fw-bolder fs-3 btn btn-primary" id="Home-tab" (click)="Action($event)" data-bs-toggle="pill"
+            data-bs-target="#Home" role="tab" aria-selected="true" aria-controls="Home">
+            Home
+          </button>
 
         </li>
         <li class="mb-1">
-          <button class="fw-bolder fs-3  btn btn-primary btn-toggle collapsed" 
-          data-bs-toggle="collapse" data-bs-target="#Classes-collapse" (click)="LoadClasses()">
+          <button class="fw-bolder fs-3  btn btn-primary btn-toggle collapsed" data-bs-toggle="collapse"
+            data-bs-target="#Classes-collapse" (click)="LoadClasses()">
             Classes
           </button>
           <div class="collapse" id="Classes-collapse">
             <ul class="list-unstyled fw-normal pb-1 nav" (click)="Action($event)">
               <li class="w-100">
-                
-                <button class="fw-bolder fs-3 btn link-primary"
-                id="Overview-tab" 
-                type="button" role="tab" data-bs-toggle="pill" data-bs-target="#Overview" 
-                aria-controls="Overview">Overview</button>
 
-              </li> 
+                <button class="fw-bolder fs-3 btn link-primary" id="Overview-tab" type="button" role="tab"
+                  data-bs-toggle="pill" data-bs-target="#Overview" aria-controls="Overview">Overview</button>
 
-                <ng-container *ngFor="let class of classes">
+              </li>
+
+              <ng-container *ngFor="let class of classes">
                 <li class="w-100">
-                  
-                  <button class="fw-bolder fs-3 btn link-primary"
-                  id="{{class._id}}-tab" 
-                type="button" role="tab" data-bs-toggle="pill"  [attr.data-bs-target]="'#C' + class._id"
-                [attr.aria-controls]="class._id"
-                  >{{class.Name}}</button>
-                
+
+                  <button class="fw-bolder fs-3 btn link-primary" id="{{class._id}}-tab" type="button" role="tab"
+                    data-bs-toggle="pill" [attr.data-bs-target]="'#C' + class._id"
+                    [attr.aria-controls]="class._id">{{class.Name}}</button>
+
                 </li>
               </ng-container>
               <ng-container *ngIf="Admin">
-              <li class="w-100"><button class="fw-bolder fs-3 btn link-primary"
-                id="Updates-tab" 
-                type="button" role="tab" data-bs-toggle="pill"  data-bs-target="#Updates"
-                aria-controls="Updates">Updates</button></li>
-              <li class="w-100">
-                <button class="fw-bolder fs-3 btn ps-0 mb-2 link-primary"
-                id="Create-tab" 
-                type="button" role="tab" data-bs-toggle="pill"  data-bs-target="#Create"
-                aria-controls="Create"><i class="bi bi-plus-circle-fill"></i>New Class</button>
-              </li>
-            </ng-container>
+                <li class="w-100"><button class="fw-bolder fs-3 btn link-primary" id="Updates-tab" type="button"
+                    role="tab" data-bs-toggle="pill" data-bs-target="#Updates" aria-controls="Updates">Updates</button>
+                </li>
+                <li class="w-100">
+                  <button class="fw-bolder fs-3 btn ps-0 mb-2 link-primary" id="Create-tab" type="button" role="tab"
+                    data-bs-toggle="pill" data-bs-target="#Create" aria-controls="Create"><i
+                      class="bi bi-plus-circle-fill"></i>New Class</button>
+                </li>
+              </ng-container>
             </ul>
           </div>
         </li>
         <li class="mb-1">
-          <button class="fw-bolder fs-3 btn btn-primary btn-toggle collapsed" data-bs-toggle="collapse" 
-          data-bs-target="#Material-collapse" aria-expanded="false" (click)="LoadMaterial()">
+          <button class="fw-bolder fs-3 btn btn-primary btn-toggle collapsed" data-bs-toggle="collapse"
+            data-bs-target="#Material-collapse" aria-expanded="false" (click)="LoadMaterial()">
             Material
           </button>
           <div class="collapse" id="Material-collapse">
             <ul class="btn-toggle list-unstyled fw-normal pb-1 nav" (click)="Action($event)">
               <li class="w-100">
-                
-                <button class="fw-bolder fs-3 btn link-primary"
-                id="OverviewMaterial-tab" 
-                type="button" role="tab" data-bs-toggle="pill" data-bs-target="#OverviewMaterial" 
-                aria-controls="OverviewMaterial">Overview</button>
+
+                <button class="fw-bolder fs-3 btn link-primary" id="OverviewMaterial-tab" type="button" role="tab"
+                  data-bs-toggle="pill" data-bs-target="#OverviewMaterial"
+                  aria-controls="OverviewMaterial">Overview</button>
 
               </li>
               <ng-container *ngFor="let material of Materials">
                 <li class="w-100">
-                  
-                  <button class="fw-bolder fs-3 btn link-primary"
-                  id="{{material.name}}-tab" 
-                type="button" role="tab" data-bs-toggle="pill"  [attr.data-bs-target]="'#' + material.name"
-                [attr.aria-controls]="material.name"
-                  >{{material.name}}
-                </button>
+
+                  <button class="fw-bolder fs-3 btn link-primary" id="{{material.name}}-tab" type="button" role="tab"
+                    data-bs-toggle="pill" [attr.data-bs-target]="'#' + material.name"
+                    [attr.aria-controls]="material.name">{{material.name}}
+                  </button>
 
                 </li>
               </ng-container>
               <ng-container *ngIf="Admin">
                 <li class="w-100">
-                  <button class="fw-bolder fs-3 btn link-primary"
-                id="UpdatesMaterial-tab" 
-                type="button" role="tab" data-bs-toggle="pill" data-bs-target="#UpdatesMaterial" 
-                aria-controls="UpdatesMaterial">Updates</button></li>
+                  <button class="fw-bolder fs-3 btn link-primary" id="UpdatesMaterial-tab" type="button" role="tab"
+                    data-bs-toggle="pill" data-bs-target="#UpdatesMaterial"
+                    aria-controls="UpdatesMaterial">Updates</button>
+                </li>
                 <li class="w-100">
-                  <button class="fw-bolder fs-3 btn link-primary ps-0 mb-2"
-                  id="CreateMaterial-tab" 
-                  type="button" role="tab" data-bs-toggle="pill" data-bs-target="#CreateMaterial" 
-                  aria-controls="CreateMaterial"><i class="bi bi-plus-circle-fill"></i>New Material</button></li>
+                  <button class="fw-bolder fs-3 btn link-primary ps-0 mb-2" id="CreateMaterial-tab" type="button"
+                    role="tab" data-bs-toggle="pill" data-bs-target="#CreateMaterial" aria-controls="CreateMaterial"><i
+                      class="bi bi-plus-circle-fill"></i>New Material</button>
+                </li>
               </ng-container>
             </ul>
           </div>
@@ -106,6 +95,7 @@
       </ul>
     </div>
   </div>
+  
   <div class="col-md-8 col-sm-8">
     <div class="tab-content" id="pills-tabContent">
 
@@ -113,66 +103,92 @@
 
       <div class="tab-pane fade" id="Overview" role="tabpanel" aria-labelledby="Overview-tab">Overview</div>
       <ng-container *ngFor="let class of classes; index">
-        <div class="tab-pane fade" id="C{{class._id}}" role="tabpanel" aria-labelledby="{{class._id}}-tab">{{class.Name}}</div>
+        <div class="tab-pane fade" id="C{{class._id}}" role="tabpanel" aria-labelledby="{{class._id}}-tab">
+          {{class.Name}}</div>
       </ng-container>
       <ng-container *ngIf="Admin">
-      <div class="tab-pane fade" id="Updates" role="tabpanel" aria-labelledby="Updates-tab">Updates</div>
-      <div class="tab-pane fade" id="Create" role="tabpanel" aria-labelledby="Create-tab">
-        
-        <!--Create Form Class-->
+        <div class="tab-pane fade" id="Updates" role="tabpanel" aria-labelledby="Updates-tab">Updates</div>
+        <div class="tab-pane fade" id="Create" role="tabpanel" aria-labelledby="Create-tab">
 
-<form #createNewClasse="ngForm" (ngSubmit)="NewCourse(createNewClasse)">
-        <div class="row">
-          <label for="NameInput" class="col-sm-2 col-form-label col-form-label-lg">Name</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control form-control-lg" id="NameInput" 
-            placeholder="Please Entre Name Classs" name="name" ngModel required>
-          </div>
+          <!--Create Form Class-->
+
+          <form #createNewClasse="ngForm" (ngSubmit)="NewCourse(createNewClasse)">
+            <div class="row">
+              <label for="NameInput" class="col-sm-2 col-form-label col-form-label-lg">Name</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control form-control-lg" id="NameInput"
+                  placeholder="Please Entre Name Classs" name="name" ngModel required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="DetialsInput" class="form-label col-form-label-lg">Detials</label>
+              <textarea class="form-control form-control-lg" id="DetialsInput" rows="3"
+                placeholder="Add Any Details About this Class Such As number Hour number Lecture Professor lecturer What explain"
+                name="detials" ngModel required></textarea>
+            </div>
+            <h2 class="fst-italic">Please Select Material to add In this Class Or not now</h2>
+            <div class="row m-2" style="max-height: 15vh; overflow-y: auto;">
+              <ng-container *ngFor="let material of Materials">
+                <div class="col-6 form-control-lg">
+                  <input type="checkbox" name="{{material.name}}" id="{{material.name}}" ngModel>
+                  <label class="ms-2" for="{{material.name}}">{{material.name}}</label>
+                </div>
+              </ng-container>
+            </div>
+            <div class="mb-3">
+              <label for="Note" class="form-label col-form-label-lg">Note</label>
+              <textarea class="form-control form-control-lg" id="Note" rows="3" ngModel name="note"
+                placeholder="Add Any Note About this Class Such As Must Pass some material or age more than ..etc"></textarea>
+            </div>
+            <button class="btn btn-primary w-100 btn-lg" type="submit" [disabled]="createNewClasse.invalid">Add
+              Class</button>
+          </form>
+
+          <!--Finish Code Form Create Class-->
         </div>
-        <div class="mb-3">
-          <label for="DetialsInput" class="form-label col-form-label-lg">Detials</label>
-          <textarea class="form-control form-control-lg" id="DetialsInput" rows="3" 
-          placeholder="Add Any Details About this Class Such As number Hour number Lecture Professor lecturer What explain"
-          name="detials" ngModel required></textarea>
-        </div>
-        <h2 class="fst-italic">Please Select Material to add In this Class Or not now</h2>
-        <div class="row m-2" style="max-height: 15vh; overflow-y: auto;">          
-          <ng-container *ngFor="let material of Materials">
-            <div class="col-6 form-control-lg">
-              <input type="checkbox" name="{{material.name}}" id="{{material.name}}" ngModel>
-              <label class="ms-2" for="{{material.name}}">{{material.name}}</label>
-            </div>            
-          </ng-container>
-        </div>
-        <div class="mb-3">
-          <label for="Note" class="form-label col-form-label-lg">Note</label>
-          <textarea class="form-control form-control-lg" id="Note" rows="3" ngModel name="note"
-          placeholder="Add Any Note About this Class Such As Must Pass some material or age more than ..etc"></textarea>
-        </div>
-        <button class="btn btn-primary w-100 btn-lg" type="submit" 
-        [disabled]="createNewClasse.invalid">Add Class</button>
-      </form>
+      </ng-container>
 
-        <!--Finish Code Form Create Class-->
-      </div>
-    </ng-container>
-
-<!--This is divid between Material and Classes Above Classes and below Material -->
+      <!--This is divid between Material and Classes Above Classes and below Material -->
 
 
-      <div class="tab-pane fade" id="OverviewMaterial" role="tabpanel" aria-labelledby="OverviewMaterial-tab">Overview Material</div>
-      
+      <div class="tab-pane fade" id="OverviewMaterial" role="tabpanel" aria-labelledby="OverviewMaterial-tab">Overview
+        Material</div>
+
       <ng-container *ngFor="let material of Materials">
-        <div class="tab-pane fade" id="{{material.name}}" role="tabpanel" aria-labelledby="{{material.name}}-tab">{{material.name}}</div>
+        <div class="tab-pane fade" id="{{material.name}}" role="tabpanel" aria-labelledby="{{material.name}}-tab">
+          {{material.name}}</div>
       </ng-container>
 
       <ng-container *ngIf="Admin">
-      <div class="tab-pane fade" id="UpdatesMaterial" role="tabpanel" aria-labelledby="UpdatesMaterial-tab">Updates aterial</div>
-      <div class="tab-pane fade" id="CreateMaterial" role="tabpanel" aria-labelledby="CreateMaterial-tab">Create Material</div>
-    </ng-container>
+        <div class="tab-pane fade" id="UpdatesMaterial" role="tabpanel" aria-labelledby="UpdatesMaterial-tab">Updates
+          aterial</div>
+        <div class="tab-pane fade" id="CreateMaterial" role="tabpanel" aria-labelledby="CreateMaterial-tab">
+          <!--Create Form Material-->
+          <form [formGroup]="CreateMaterial" (ngSubmit)="CreateNewMaterial()">
+            <div class="row g-2">
+              <div class="col-xl-2 col-lg-2 col-md-3 col-sm-3 col-8">
+                <label for="inputName" class="col-form-label col-form-label-lg fw-bold">Name</label>
+              </div>
+              <div class="col-xl-10 col-lg-10 col-md-9 col-sm-9 col-12">
+                <input type="text" id="inputName" class="form-control">
+              </div>
+              <div class="mt-1">
+                <label for="selectProffessor" class="form-label">Password</label>
+                <select id="selectProffessor" class="form-control" aria-describedby="selectProffessor">
+                  <<ng-template [ngTemplateOutlet]="outlet" [ngOutletContext]="context">
+                    <!--I stoped here and will complete get all data and set data in Option by Foreach-->
+                  </ng-template>
+                </select>
+                <div id="passwordHelpBlock" class="form-text">
+                  Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces,
+                  special characters, or emoji.
+                </div>
+              </div>
+            </div>
+          </form>
+          <!--Finish Code Form Create Material-->
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>
-
-
-

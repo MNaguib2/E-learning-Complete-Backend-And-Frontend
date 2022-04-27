@@ -8,3 +8,9 @@
 textarea.ng-invalid {
     border-left: 5px solid #a94442;
   }
+
+  @media only screen and (max-width: 575px) {
+    input,label{
+        margin-left: 10px;
+    }
+  }
