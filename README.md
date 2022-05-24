@@ -10,3 +10,6 @@ npm install jsonwebtoken
 npm install body-parser
 npm install bcryptjs
 npm install --save express-validator
+
+
+mongod --dbpath=db
