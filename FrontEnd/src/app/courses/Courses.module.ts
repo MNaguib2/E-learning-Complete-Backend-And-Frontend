@@ -7,6 +7,10 @@ import { CourseRouting } from "./course-routing.module";
 import { CoursesListComponent } from "./courses-list/courses-list.component";
 import { DetialsComponent } from "./detials/detials.component";
 import { EditCourseComponent } from "./edit-course/edit-course.component";
+import { AddMaterialComponent } from './add-material/add-material.component';
+import { AddClassesComponent } from './add-classes/add-classes.component';
+import {MatSelectModule, MatFormFieldModule} from '@angular/material';
+import { MatSelectFilterModule } from 'mat-select-filter';
 
 @NgModule({
     declarations:[
@@ -14,13 +18,18 @@ import { EditCourseComponent } from "./edit-course/edit-course.component";
         EditCourseComponent,
         ClassesComponent,
         DetialsComponent,
+        AddMaterialComponent,
+        AddClassesComponent,
     ],
     imports: [
         CommonModule,
         FormsModule,
         CourseRouting,
         ReactiveFormsModule,
-        AuthModule
+        AuthModule,
+        MatSelectModule, 
+        MatFormFieldModule,
+        MatSelectFilterModule
     ],
     providers: [
 

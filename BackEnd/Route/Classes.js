@@ -9,10 +9,6 @@ body('Detials').trim().isLength({min: 10}).withMessage('Please Entre More Detial
 ]
 , ClassesController.NewClasses);
 
-Router.get('/GetAllClasses' , ClassesController.GetAllClass);
-Router.get('/GetAllProffessor' , ClassesController.GetAllProffessor);
-
-Router.get('/GetAllMaterial' , ClassesController.GETAllMaterial);
 Router.get('/AddMaterial' , ClassesController.AddMaterial);
 
 module.exports = Router;

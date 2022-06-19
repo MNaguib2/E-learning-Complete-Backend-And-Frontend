@@ -1,0 +1,32 @@
+
+<form #createNewClasse="ngForm" (ngSubmit)="NewCourse(createNewClasse)">
+    <div class="row">
+      <label for="NameInput" class="col-sm-2 col-form-label col-form-label-lg">Name</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control form-control-lg" id="NameInput"
+          placeholder="Please Entre Name Classs" name="name" ngModel required>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="DetialsInput" class="form-label col-form-label-lg">Detials</label>
+      <textarea class="form-control form-control-lg" id="DetialsInput" rows="3"
+        placeholder="Add Any Details About this Class Such As number Hour number Lecture Professor lecturer What explain"
+        name="detials" ngModel required></textarea>
+    </div>
+    <h2 class="fst-italic">Please Select Material to add In this Class Or not now</h2>
+    <div class="row m-2" style="max-height: 15vh; overflow-y: auto;">
+      <ng-container *ngFor="let material of Materials">
+        <div class="col-6 form-control-lg">
+          <input type="checkbox" name="{{material.name}}" id="{{material.name}}" ngModel>
+          <label class="ms-2" for="{{material.name}}">{{material.name}}</label>
+        </div>
+      </ng-container>
+    </div>
+    <div class="mb-3">
+      <label for="Note" class="form-label col-form-label-lg">Note</label>
+      <textarea class="form-control form-control-lg" id="Note" rows="3" ngModel name="note"
+        placeholder="Add Any Note About this Class Such As Must Pass some material or age more than ..etc"></textarea>
+    </div>
+    <button class="btn btn-primary w-100 btn-lg" type="submit" [disabled]="createNewClasse.invalid">Add
+      Class</button>
+  </form>

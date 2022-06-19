@@ -35,4 +35,8 @@ to install all NodeModule
 
 npm install --save-dev
 npm install
+npm install @syncfusion/ej2-angular-dropdowns       this update npm i @syncfusion/ej2-dropdowns  this is not free
 
+npm uninstall @syncfusion/ej2-angular-dropdowns
+
+npm install mat-select-filter

@@ -1,9 +1,9 @@
 <ng-template appPlaceHolder></ng-template>
 <div class="row mt-1" style="width: 98vw;">
-  <div class="col-md-4 col-sm-4 overflow-auto navbar-expand-sm" style="max-height: 83vh; padding-bottom: 5px;">
+  <div class="col-md-4 col-sm-4 overflow-auto navbar-expand-sm" style="padding-bottom: 5px;">
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      aria-controls="navbarText" aria-expanded="false">
       <i class="bi bi-arrow-right-circle-fill"></i>
     </button>
     <!--align-items-center-->
@@ -19,7 +19,7 @@
         </li>
         <li class="mb-1">
           <button class="fw-bolder fs-3  btn btn-primary btn-toggle collapsed" data-bs-toggle="collapse"
-            data-bs-target="#Classes-collapse" (click)="LoadClasses()">
+            data-bs-target="#Classes-collapse" (click)="LoadData()">
             Classes
           </button>
           <div class="collapse" id="Classes-collapse">
@@ -55,7 +55,7 @@
         </li>
         <li class="mb-1">
           <button class="fw-bolder fs-3 btn btn-primary btn-toggle collapsed" data-bs-toggle="collapse"
-            data-bs-target="#Material-collapse" aria-expanded="false" (click)="LoadMaterial()">
+            data-bs-target="#Material-collapse" aria-expanded="false" (click)="LoadData()">
             Material
           </button>
           <div class="collapse" id="Material-collapse">
@@ -99,50 +99,20 @@
   <div class="col-md-8 col-sm-8">
     <div class="tab-content" id="pills-tabContent">
 
-      <div class="tab-pane fade active show" id="Home" role="tabpanel" aria-labelledby="Home-tab">Home</div>
+      <div class="tab-pane fade active show" id="Home" role="tabpanel">Home</div>
 
-      <div class="tab-pane fade" id="Overview" role="tabpanel" aria-labelledby="Overview-tab">Overview</div>
+      <div class="tab-pane fade" id="Overview" role="tabpanel">Overview</div>
       <ng-container *ngFor="let class of classes; index">
-        <div class="tab-pane fade" id="C{{class._id}}" role="tabpanel" aria-labelledby="{{class._id}}-tab">
+        <div class="tab-pane fade" id="C{{class._id}}" role="tabpanel">
           {{class.Name}}</div>
       </ng-container>
       <ng-container *ngIf="Admin">
-        <div class="tab-pane fade" id="Updates" role="tabpanel" aria-labelledby="Updates-tab">Updates</div>
-        <div class="tab-pane fade" id="Create" role="tabpanel" aria-labelledby="Create-tab">
+        <div class="tab-pane fade" id="Updates" role="tabpanel">Updates</div>
+        <div class="tab-pane fade" id="Create" role="tabpanel">
 
           <!--Create Form Class-->
 
-          <form #createNewClasse="ngForm" (ngSubmit)="NewCourse(createNewClasse)">
-            <div class="row">
-              <label for="NameInput" class="col-sm-2 col-form-label col-form-label-lg">Name</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control form-control-lg" id="NameInput"
-                  placeholder="Please Entre Name Classs" name="name" ngModel required>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="DetialsInput" class="form-label col-form-label-lg">Detials</label>
-              <textarea class="form-control form-control-lg" id="DetialsInput" rows="3"
-                placeholder="Add Any Details About this Class Such As number Hour number Lecture Professor lecturer What explain"
-                name="detials" ngModel required></textarea>
-            </div>
-            <h2 class="fst-italic">Please Select Material to add In this Class Or not now</h2>
-            <div class="row m-2" style="max-height: 15vh; overflow-y: auto;">
-              <ng-container *ngFor="let material of Materials">
-                <div class="col-6 form-control-lg">
-                  <input type="checkbox" name="{{material.name}}" id="{{material.name}}" ngModel>
-                  <label class="ms-2" for="{{material.name}}">{{material.name}}</label>
-                </div>
-              </ng-container>
-            </div>
-            <div class="mb-3">
-              <label for="Note" class="form-label col-form-label-lg">Note</label>
-              <textarea class="form-control form-control-lg" id="Note" rows="3" ngModel name="note"
-                placeholder="Add Any Note About this Class Such As Must Pass some material or age more than ..etc"></textarea>
-            </div>
-            <button class="btn btn-primary w-100 btn-lg" type="submit" [disabled]="createNewClasse.invalid">Add
-              Class</button>
-          </form>
+          <app-add-classes></app-add-classes>
 
           <!--Finish Code Form Create Class-->
         </div>
@@ -151,42 +121,19 @@
       <!--This is divid between Material and Classes Above Classes and below Material -->
 
 
-      <div class="tab-pane fade" id="OverviewMaterial" role="tabpanel" aria-labelledby="OverviewMaterial-tab">Overview
+      <div class="tab-pane fade" id="OverviewMaterial" role="tabpanel">Overview
         Material</div>
 
       <ng-container *ngFor="let material of Materials">
-        <div class="tab-pane fade" id="{{material.name}}" role="tabpanel" aria-labelledby="{{material.name}}-tab">
+        <div class="tab-pane fade" id="{{material.name}}" role="tabpanel">
           {{material.name}}</div>
       </ng-container>
 
       <ng-container *ngIf="Admin">
-        <div class="tab-pane fade" id="UpdatesMaterial" role="tabpanel" aria-labelledby="UpdatesMaterial-tab">Updates
+        <div class="tab-pane fade" id="UpdatesMaterial" role="tabpanel">Updates
           aterial</div>
-        <div class="tab-pane fade" id="CreateMaterial" role="tabpanel" aria-labelledby="CreateMaterial-tab">
-          <!--Create Form Material-->
-          <form [formGroup]="CreateMaterial" (ngSubmit)="CreateNewMaterial()">
-            <div class="row g-2">
-              <div class="col-xl-2 col-lg-2 col-md-3 col-sm-3 col-8">
-                <label for="inputName" class="col-form-label col-form-label-lg fw-bold">Name</label>
-              </div>
-              <div class="col-xl-10 col-lg-10 col-md-9 col-sm-9 col-12">
-                <input type="text" id="inputName" class="form-control">
-              </div>
-              <div class="mt-1">
-                <label for="selectProffessor" class="form-label">Password</label>
-                <select id="selectProffessor" class="form-control" aria-describedby="selectProffessor">
-                  <<ng-template [ngTemplateOutlet]="outlet" [ngOutletContext]="context">
-                    <!--I stoped here and will complete get all data and set data in Option by Foreach-->
-                  </ng-template>
-                </select>
-                <div id="passwordHelpBlock" class="form-text">
-                  Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces,
-                  special characters, or emoji.
-                </div>
-              </div>
-            </div>
-          </form>
-          <!--Finish Code Form Create Material-->
+        <div class="tab-pane fade" id="CreateMaterial" role="tabpanel">
+          <app-add-material [Classes] = "classes" [Material] = "Materials"></app-add-material>
         </div>
       </ng-container>
     </div>

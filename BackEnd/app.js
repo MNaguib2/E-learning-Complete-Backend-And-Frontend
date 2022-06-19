@@ -7,13 +7,12 @@ const url = 'mongodb://127.0.0.1:27017/E-Learning';
 const AuthRoute = require('./Route/Auth');
 const ConfirmRoute = require('./Route/Confirm');
 const ClassesRoute = require('./Route/Classes');
+const ClasseRoute = require('./Route/class');
 const path = require('path');
 const MiddleWare =require('./middleware/Auth');
 const app = express();
 
 app.use(bodyparse.json());
-
-// app.use(multer().any());
 
 app.use('',express.static(path.join(__dirname, 'Data')));
 //app.use('Data',express.static(path.join(__dirname, 'Data')));
@@ -24,7 +23,7 @@ app.use(cors());
 
 //   app.use((req,res,next) => {
 //     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+//     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
 //     res.header('Access-Control-Allow-Headers', 'Content-Type');
 //     next();  
 //   });
@@ -32,6 +31,7 @@ app.use(cors());
 app.use('/Admin', AuthRoute);
 app.use('/Confirm', ConfirmRoute);
 app.use('/Classes', MiddleWare.AuthAdmin , ClassesRoute);
+app.use('/Classe', MiddleWare.AuthAdmin , ClasseRoute);
 
 mongoose.connect(url)
 .then(result => {

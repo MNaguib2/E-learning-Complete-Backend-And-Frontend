@@ -18,6 +18,7 @@ import { StoreModule }  from '@ngrx/store';
 import { ClassReducer, DataMaterial, handleError, Professor } from './courses/classes/store/class-list.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ClassEffect } from './courses/classes/store/Class-list.effect';
+import { MatSelectFilterModule } from 'mat-select-filter';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ClassEffect } from './courses/classes/store/Class-list.effect';
     AuthModule,
     CoursesModule,
     StoreModule.forRoot({ClassesList : ClassReducer, ErrorMessage : handleError, Professor : Professor, Material : DataMaterial}),
-    EffectsModule.forRoot([ClassEffect])
+    EffectsModule.forRoot([ClassEffect]),
+    MatSelectFilterModule
 
   ],
   providers: [

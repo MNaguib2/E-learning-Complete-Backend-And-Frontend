@@ -23,16 +23,7 @@ const ImageFilter = (req, file, cb) => {
     }
 };
 
-const transport = nodemail.createTransport({
-    service: "gmail",
-    auth: {
-        user: "teste.learningnodejs@gmail.com",
-        pass: "a12345678A"
-    },
-    tls: {
-        rejectUnauthorized: false
-    }
-})
+const transport = nodemail.createTransport(DataShare.DataEmail)
 
 var UserName;
 

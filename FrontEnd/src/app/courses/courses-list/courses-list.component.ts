@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, OnDestroy, AfterContentInit, Inject, AfterViewInit, AfterViewChecked } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, Subscription, fromEvent, Observable } from 'rxjs';

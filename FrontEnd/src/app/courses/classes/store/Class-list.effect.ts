@@ -16,7 +16,7 @@ export class ClassEffect {
     getClasses= this.action$.pipe(
         ofType(ClassesAction.Request_Get_Classes),
         switchMap(() => {
-           return this.http.get(`${HostServer}Classes/GetAllClasses`).pipe(
+           return this.http.get(`${HostServer}Classe/GetAllClasses`).pipe(
                map((resultClasses : any) => {
                    return new ClassesAction.GetClasses(resultClasses.result)
                }),catchError((error: any) => {               
@@ -49,7 +49,7 @@ export class ClassEffect {
     GetAllProffessorFromDB = this.action$.pipe(
         ofType(ClassesAction.Request_GetAll_Proffessor),
         switchMap(() => {
-            return this.http.get(`${HostServer}Classes/GetAllProffessor`, {observe : 'response'}).pipe(
+            return this.http.get(`${HostServer}Classe/GetAllProffessor`, {observe : 'response'}).pipe(
                 map((result : any) => {
                    return ClassesAction.GetAllProffessor({Proffessor : result.body}) 
                 }),catchError(error => {
@@ -65,7 +65,7 @@ export class ClassEffect {
             ofType(ClassesAction.Request_GetAll_Material),
             switchMap(action => {
                 console.log(action);
-                return this.http.get(`${HostServer}Classes/GetAllMaterial`, {observe : 'response'}).pipe(
+                return this.http.get(`${HostServer}Classe/GetAllMaterial`, {observe : 'response'}).pipe(
                     map(Materials => {
                         console.log(Materials);
                     })
